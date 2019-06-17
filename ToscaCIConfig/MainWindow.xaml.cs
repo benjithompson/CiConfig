@@ -62,20 +62,18 @@ namespace ToscaCIConfig
         {
 
             var configname = cmbxConfigs.Text;
+            var executionmode = cbExecutionMode.Text;
             var matches = _configs.Where(p => p.ConfigName == configname);
 
             if (!matches.Any() && configname != "")
             {
                 var path = configDir + configname + ".xml";
-                _configs.Add(new TestConfig(cbExecutionMode.Text, configname, path));
+                _configs.Add(new TestConfig(executionmode, configname, path));
                 using (StreamWriter file =
                     new StreamWriter(path))
                 {
-                    file.Write("<xml>\n<testEvent></testEvent>");
+                    file.Write(Properties.Resources.ResourceManager.GetString(executionmode));
                 }
-               
-                //update combobox list
-                
             }
         }
 
@@ -99,18 +97,7 @@ namespace ToscaCIConfig
         }
     }
 
-    public class TestConfig
-    {
-        public TestConfig(string type, string name, string path)
-        {
-            ConfigType = type;
-            ConfigName = name;
-            ConfigPath = path;
-        }
-        public string ConfigType { get; set; }
-        public string ConfigName { get; set; }
-        public string ConfigPath { get; set; }
-    }
+
 
     public class IndexToBoolConverter : IValueConverter
     {
