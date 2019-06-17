@@ -1,0 +1,87 @@
+﻿<Window x:Class="ToscaCIConfig.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToscaCIConfig"
+        xmlns:toscaCiConfig="clr-namespace:ToscaCIConfig"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+        <Window.Resources>
+            <local:IndexToBoolConverter x:Key="IndexToBoolConverterKey"></local:IndexToBoolConverter>
+        </Window.Resources>
+
+<Grid Background = "White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height = "*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width = "200"/>
+            <ColumnDefinition Width="27*"></ColumnDefinition>
+            <ColumnDefinition Width="269*"/>
+        </Grid.ColumnDefinitions>
+
+        <Rectangle Grid.Column="0">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="#FF4085FF"></SolidColorBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <StackPanel Grid.Column = "0" Grid.Row = "0">
+            <Label Name="ExecutionModeLabel" Content="Execution Mode"  VerticalAlignment = "Top" HorizontalAlignment="Left">
+                <Label.Foreground>Azure</Label.Foreground>
+            </Label>
+            <ComboBox Name="cbExecutionMode" Margin="10, 0, 10, 10" SelectedIndex="0" SelectedValuePath="Content">
+                <ComboBoxItem Name="Dex">DEX</ComboBoxItem>
+                <ComboBoxItem Name="Remote">Remote</ComboBoxItem>
+                <ComboBoxItem Name="Local">Local</ComboBoxItem>
+            </ComboBox>
+
+            <Label x:Name="lConfiguration" Content = "Configuration"  VerticalAlignment = "Top" HorizontalAlignment="Left">
+                <Label.Foreground>Azure</Label.Foreground>
+            </Label>
+            <ComboBox 
+                Margin="10,0" 
+                x:Name="cmbxConfigs" 
+                ItemsSource="{Binding _configs}" 
+                DisplayMemberPath="ConfigName"
+                IsTextSearchEnabled="False"
+                IsEditable="True">
+            </ComboBox>
+
+            <Label Content="{Binding SelectedConfig.Name}"/>
+            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button x:Name="NewConfig" Click="NewConfig_OnClick" IsEnabled="{Binding ElementName=cmbxConfigs, Path=Text.Length, Mode=OneWay}" Content="New" Width="50" Margin="5, 0, 5, 5" Background="White"></Button>
+                <Button x:Name="RemoveConfig" Click="RemoveConfig_OnClick" IsEnabled="{Binding ElementName=cmbxConfigs, Path=SelectedItem, Mode=OneWay, Converter={StaticResource IndexToBoolConverterKey}}" Content="Remove" Width="70" Height="25" Margin="0, 0, 10,5" HorizontalAlignment="Right" Background="White"></Button>
+
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Margin="5" Grid.ColumnSpan="2">
+            <StackPanel  HorizontalAlignment="Left">
+                <StackPanel  Orientation="Horizontal">
+                    <DockPanel Width="241"></DockPanel>
+                    <Button x:Name="Add" Content="Add" Width="80" Height="25"  Margin="5" Background="White"></Button>
+                    <Button x:Name="Remove" Content="Remove" Width="80" Height="25"  Margin="5" Background="White"></Button>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel>
+                <TextBox ></TextBox>
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Background="GhostWhite" Grid.ColumnSpan="2">
+            <StackPanel  HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <StackPanel  Orientation="Horizontal">
+                    <DockPanel Width="411">
+                    </DockPanel>
+                    <Rectangle Stretch="UniformToFill"></Rectangle>
+                    <Button x:Name="Cancel" Content="Cancel" Width="80" Height="25"  Margin="5" Background="White"></Button>
+                    <Button x:Name="Ok" Content="OK" Width="80" Height="25"  Margin="5, 5, 10, 5" Background="White"></Button>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
