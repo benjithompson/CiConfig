@@ -33,7 +33,11 @@
             <Label Name="ExecutionModeLabel" Content="Execution Mode"  VerticalAlignment = "Top" HorizontalAlignment="Left">
                 <Label.Foreground>Azure</Label.Foreground>
             </Label>
-            <ComboBox Name="cbExecutionMode" Margin="10, 0, 10, 10" SelectedIndex="0" SelectedValuePath="Content">
+            <ComboBox Name="cbExecutionMode" 
+                      Margin="10, 0, 10, 10" 
+                      SelectedIndex="0" 
+                      SelectedValuePath="Content"
+                      DropDownClosed="CbExecutionMode_OnDropDownClosed">
                 <ComboBoxItem Name="Dex">DEX</ComboBoxItem>
                 <ComboBoxItem Name="Remote">Remote</ComboBoxItem>
                 <ComboBoxItem Name="Local">Local</ComboBoxItem>
@@ -48,7 +52,8 @@
                 ItemsSource="{Binding _configs}" 
                 DisplayMemberPath="ConfigName"
                 IsTextSearchEnabled="False"
-                IsEditable="True">
+                IsEditable="True"
+                DropDownClosed="CmbxConfigs_OnDropDownClosed">
             </ComboBox>
 
             <Label Content="{Binding SelectedConfig.Name}"/>

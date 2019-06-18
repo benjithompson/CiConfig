@@ -95,6 +95,17 @@ namespace ToscaCIConfig
                 }
             }
         }
+
+        private void CmbxConfigs_OnDropDownClosed(object sender, EventArgs e)
+        {
+            Console.WriteLine("Combobox dropdown closed with value " + cmbxConfigs.Text);
+        }
+
+        private void CbExecutionMode_OnDropDownClosed(object sender, EventArgs e)
+        {
+            Console.WriteLine("Dropdown closed with value " + cbExecutionMode.Text);
+            //change configs list to only show configs of that type.
+        }
     }
 
 
