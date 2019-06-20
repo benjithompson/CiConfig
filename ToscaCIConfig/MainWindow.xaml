@@ -9,7 +9,7 @@
         Title="MainWindow" Height="450" Width="800">
 
         <Window.Resources>
-            <local:IndexToBoolConverter x:Key="IndexToBoolConverterKey"></local:IndexToBoolConverter>
+            <local:RemoveIndexToBoolConverter x:Key="RemoveIndexToBoolConverterKey"></local:RemoveIndexToBoolConverter>
         </Window.Resources>
 
 <Grid Background = "White">
@@ -58,8 +58,8 @@
 
             <Label Content="{Binding SelectedConfig.Name}"/>
             <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                <Button x:Name="NewConfig" Click="NewConfig_OnClick" IsEnabled="{Binding ElementName=cmbxConfigs, Path=Text.Length, Mode=OneWay}" Content="New" Width="50" Margin="5, 0, 5, 5" Background="White"></Button>
-                <Button x:Name="RemoveConfig" Click="RemoveConfig_OnClick" IsEnabled="{Binding ElementName=cmbxConfigs, Path=SelectedItem, Mode=OneWay, Converter={StaticResource IndexToBoolConverterKey}}" Content="Remove" Width="70" Height="25" Margin="0, 0, 10,5" HorizontalAlignment="Right" Background="White"></Button>
+                <Button x:Name="NewConfig" Click="NewConfig_OnClick" IsEnabled="{Binding ElementName=cmbxConfigs, Path=Text.Length}" Content="New" Width="50" Margin="5, 0, 5, 5" Background="White"></Button>
+                <Button x:Name="RemoveConfig" Click="RemoveConfig_OnClick" IsEnabled="{Binding ElementName=cmbxConfigs, Path=SelectedItem, Converter={StaticResource RemoveIndexToBoolConverterKey}}" Content="Remove" Width="70" Height="25" Margin="0, 0, 10,5" HorizontalAlignment="Right" Background="White"></Button>
 
             </StackPanel>
         </StackPanel>

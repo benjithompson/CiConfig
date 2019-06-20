@@ -24,7 +24,9 @@ namespace ToscaCIConfig
 {
     public partial class MainWindow : Window
     {
-        private ObservableCollection<TestConfig> _configs;
+        private ObservableCollection<TestConfig> dexConfigs;
+        private ObservableCollection<TestConfig> remoteConfigs;
+        private ObservableCollection<TestConfig> localConfigs;
 
 
         private string configDir = "C:\\CiConfigs\\";
@@ -32,28 +34,50 @@ namespace ToscaCIConfig
         {
 
             InitializeComponent();
-            _configs = new ObservableCollection<TestConfig>();
-            cmbxConfigs.ItemsSource = _configs;
-            addConfigsToListFromDir(ref _configs, configDir);
+            dexConfigs = new ObservableCollection<TestConfig>();
+            remoteConfigs = new ObservableCollection<TestConfig>();
+            localConfigs = new ObservableCollection<TestConfig>();
+            addConfigsToListFromDir();
+            setcbConfigsItemSource();
             this.Loaded += new RoutedEventHandler(MainWindowLoaded);
         }
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
-            cmbxConfigs.ItemsSource = _configs;
-            BindingList<TestConfig> tcBindingList = new BindingList<TestConfig>(_configs);
-            tcBindingList.RaiseListChangedEvents = true;
+            cmbxConfigs.ItemsSource = dexConfigs;
+            BindingList<TestConfig> dexBindingList = new BindingList<TestConfig>(dexConfigs)
+            {
+                RaiseListChangedEvents = true
+            };
+            BindingList<TestConfig> remoteBindingList = new BindingList<TestConfig>(dexConfigs)
+            {
+                RaiseListChangedEvents = true
+            };
         }
 
-        private void addConfigsToListFromDir(ref ObservableCollection<TestConfig> _configs, string dir)
+        private void addConfigsToListFromDir()
         {
             string cbConfigValue = cbExecutionMode.Text;
 
             //open folder or create if doesn't exist
             Directory.CreateDirectory(configDir);
-            foreach (string file in Directory.EnumerateFiles(dir, "*.xml"))
+            foreach (string file in Directory.EnumerateFiles(configDir, "*.xml"))
             {
-                _configs.Add(new TestConfig(cbConfigValue, Path.GetFileNameWithoutExtension(file), file));
+                var filename = Path.GetFileNameWithoutExtension(file);
+                if (filename.StartsWith("DEX"))
+                {
+                    filename = removeExecutionMode(filename, "DEX");
+                    //test file for execution mode using filename
+                    dexConfigs.Add(new TestConfig(cbConfigValue, filename, file));
+                }else if(filename.StartsWith("Remote"))
+                {
+                    filename = removeExecutionMode(filename, "Remote");
+                    remoteConfigs.Add(new TestConfig(cbConfigValue, filename, file));
+                }else if (filename.StartsWith("Local"))
+                {
+                    filename = removeExecutionMode(filename, "Local");
+                    localConfigs.Add(new TestConfig(cbConfigValue, filename, file));
+                }
             }
         }
 
@@ -61,36 +85,78 @@ namespace ToscaCIConfig
         private void NewConfig_OnClick(object sender, RoutedEventArgs e)
         {
 
+
+            var path = "";
             var configname = cmbxConfigs.Text;
             var executionmode = cbExecutionMode.Text;
-            var matches = _configs.Where(p => p.ConfigName == configname);
+            var filename = executionmode + "_" + configname;
+
+            ObservableCollection<TestConfig> configs;
+
+            if (executionmode == "DEX")
+            {
+                configs = dexConfigs;
+            }else 
+            if (executionmode == "Remote")
+            {
+                configs = remoteConfigs;
+            }
+            else
+            {
+                configs = localConfigs;
+            }
+             
+
+            var matches = configs.Where(p => p.ConfigName == configname);
 
             if (!matches.Any() && configname != "")
             {
-                var path = configDir + configname + ".xml";
-                _configs.Add(new TestConfig(executionmode, configname, path));
-                using (StreamWriter file =
-                    new StreamWriter(path))
+                path = configDir + executionmode + "_" + configname + ".xml";
+                MessageBoxResult msgBoxResult = MessageBox.Show("Creating TestConfig at " + path, "New TestConfig", MessageBoxButton.OKCancel);
+                if (msgBoxResult == MessageBoxResult.OK)
                 {
-                    file.Write(Properties.Resources.ResourceManager.GetString(executionmode));
+                    configs.Add(new TestConfig(executionmode, configname, path));
+                    using (StreamWriter file =
+                        new StreamWriter(path))
+                    {
+                        file.Write(Properties.Resources.ResourceManager.GetString(executionmode));
+                    }
                 }
+               
+
             }
         }
 
         private void RemoveConfig_OnClick(object sender, RoutedEventArgs e)
         {
+            var executionmode = cbExecutionMode.Text;
+            ObservableCollection<TestConfig> configs;
+
+            if (executionmode == "DEX")
+            {
+                configs = dexConfigs;
+            }
+            else
+            if (executionmode == "Remote")
+            {
+                configs = remoteConfigs;
+            }
+            else
+            {
+                configs = localConfigs;
+            }
             if (cmbxConfigs.Text != "")
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Delete TestConfig?", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     var configname = cmbxConfigs.Text;
-                    var matches = _configs.Where(p => p.ConfigName == configname);
+                    var matches = configs.Where(p => p.ConfigName == configname);
                     if (matches.Any())
                     {
                         var path = matches.First().ConfigPath;
                         File.Delete(path);
-                        _configs.Remove(matches.First());
+                        configs.Remove(matches.First());
                     }
                 }
             }
@@ -105,12 +171,47 @@ namespace ToscaCIConfig
         {
             Console.WriteLine("Dropdown closed with value " + cbExecutionMode.Text);
             //change configs list to only show configs of that type.
+            setcbConfigsItemSource();
+        }
+
+        private void setcbConfigsItemSource()
+        {
+            switch (cbExecutionMode.Text)
+            {
+                case "DEX":
+                    cmbxConfigs.ItemsSource = dexConfigs;
+                    break;
+                case "Remote":
+                    cmbxConfigs.ItemsSource = remoteConfigs;
+                    break;
+                case "Local":
+                    cmbxConfigs.ItemsSource = localConfigs;
+                    break;
+            }
+        }
+
+        private string removeExecutionMode(string filename, string exType)
+        {
+            switch (exType)
+            {
+                case "DEX":
+                    filename = filename.Substring(4, filename.Length-4);
+                    break;
+                case "Remote":
+                    filename = filename.Substring(7, filename.Length-7);
+                    break;
+                case "Local":
+                    filename = filename.Substring(6, filename.Length-6);
+                    break;
+            }
+            return filename;
         }
     }
 
 
 
-    public class IndexToBoolConverter : IValueConverter
+
+    public class RemoveIndexToBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
