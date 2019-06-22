@@ -10,7 +10,8 @@
 
         <Window.Resources>
             <local:RemoveIndexToBoolConverter x:Key="RemoveIndexToBoolConverterKey"></local:RemoveIndexToBoolConverter>
-        </Window.Resources>
+            
+    </Window.Resources>
 
 <Grid Background = "White">
         <Grid.RowDefinitions>
@@ -65,18 +66,33 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Margin="5" Grid.ColumnSpan="2">
-            <StackPanel  HorizontalAlignment="Left">
-                <StackPanel  Orientation="Horizontal">
-                    <DockPanel Width="241"></DockPanel>
-                    <Button x:Name="Add" Content="Add" Width="80" Height="25"  Margin="5" Background="White"></Button>
-                    <Button x:Name="Remove" Content="Remove" Width="80" Height="25"  Margin="5" Background="White"></Button>
-                </StackPanel>
-            </StackPanel>
+
             <StackPanel>
-                <TextBox ></TextBox>
+                <Label Name="tbEvents" Content="Executions"></Label>
+                <ListView Name="lvExecutions" Margin="5" VerticalContentAlignment="Stretch">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="NodePath" Width="120" DisplayMemberBinding="{Binding NodePath}" />
+                            <GridViewColumn Header="SurrogateId" Width="120" DisplayMemberBinding="{Binding SurrogateId}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <Label Name="tbProperties" Content="Properties"></Label>
+                <ListView Name="lvProperties" Margin="5" VerticalContentAlignment="Stretch">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Property" Width="120" DisplayMemberBinding="{Binding Name}" />
+                            <GridViewColumn Header="Value" Width="150" DisplayMemberBinding="{Binding Value}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
             </StackPanel>
 
         </StackPanel>
+
+
         <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Background="GhostWhite" Grid.ColumnSpan="2">
             <StackPanel  HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <StackPanel  Orientation="Horizontal">

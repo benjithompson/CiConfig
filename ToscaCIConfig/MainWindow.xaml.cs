@@ -27,6 +27,8 @@ namespace ToscaCIConfig
         private ObservableCollection<TestConfig> dexConfigs;
         private ObservableCollection<TestConfig> remoteConfigs;
         private ObservableCollection<TestConfig> localConfigs;
+        private ObservableCollection<Execution> executions;
+        private ObservableCollection<CustomProperty> customProperties;
 
 
         private string configDir = "C:\\CiConfigs\\";
@@ -34,12 +36,27 @@ namespace ToscaCIConfig
         {
 
             InitializeComponent();
+
+            //Mode and Configurations
             dexConfigs = new ObservableCollection<TestConfig>();
             remoteConfigs = new ObservableCollection<TestConfig>();
             localConfigs = new ObservableCollection<TestConfig>();
             addConfigsToListFromDir();
             setcbConfigsItemSource();
-            this.Loaded += new RoutedEventHandler(MainWindowLoaded);
+
+            //Executions and Properties
+            tbEvents.Content = cbExecutionMode.Text + " Executions";
+
+            executions = new ObservableCollection<Execution>();
+            customProperties = new ObservableCollection<CustomProperty>();
+
+            //Set the TestConfig Lists
+            executions.Add(new Execution("nodepath1", ""));
+            customProperties.Add(new CustomProperty("customProperty", "value"));
+
+            lvExecutions.ItemsSource = executions;
+            lvProperties.ItemsSource = customProperties;
+
         }
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
@@ -172,6 +189,7 @@ namespace ToscaCIConfig
             Console.WriteLine("Dropdown closed with value " + cbExecutionMode.Text);
             //change configs list to only show configs of that type.
             setcbConfigsItemSource();
+            tbEvents.Content = cbExecutionMode.Text + " Executions";
         }
 
         private void setcbConfigsItemSource()
