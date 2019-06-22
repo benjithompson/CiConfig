@@ -51,8 +51,54 @@ namespace ToscaCIConfig
             customProperties = new ObservableCollection<CustomProperty>();
 
             //Set the TestConfig Lists
-            executions.Add(new Execution("nodepath1", ""));
-            customProperties.Add(new CustomProperty("customProperty", "value"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            executions.Add(new Execution("nodepath or surrogateid"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
+            customProperties.Add(new CustomProperty("customPropertyName", "property value"));
 
             lvExecutions.ItemsSource = executions;
             lvProperties.ItemsSource = customProperties;
@@ -61,7 +107,7 @@ namespace ToscaCIConfig
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
-            cmbxConfigs.ItemsSource = dexConfigs;
+            cbConfigs.ItemsSource = dexConfigs;
             BindingList<TestConfig> dexBindingList = new BindingList<TestConfig>(dexConfigs)
             {
                 RaiseListChangedEvents = true
@@ -104,7 +150,7 @@ namespace ToscaCIConfig
 
 
             var path = "";
-            var configname = cmbxConfigs.Text;
+            var configname = cbConfigs.Text;
             var executionmode = cbExecutionMode.Text;
             var filename = executionmode + "_" + configname;
 
@@ -162,12 +208,12 @@ namespace ToscaCIConfig
             {
                 configs = localConfigs;
             }
-            if (cmbxConfigs.Text != "")
+            if (cbConfigs.Text != "")
             {
                 MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Delete TestConfig?", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    var configname = cmbxConfigs.Text;
+                    var configname = cbConfigs.Text;
                     var matches = configs.Where(p => p.ConfigName == configname);
                     if (matches.Any())
                     {
@@ -179,9 +225,9 @@ namespace ToscaCIConfig
             }
         }
 
-        private void CmbxConfigs_OnDropDownClosed(object sender, EventArgs e)
+        private void cbConfigs_OnDropDownClosed(object sender, EventArgs e)
         {
-            Console.WriteLine("Combobox dropdown closed with value " + cmbxConfigs.Text);
+            Console.WriteLine("Combobox dropdown closed with value " + cbConfigs.Text);
         }
 
         private void CbExecutionMode_OnDropDownClosed(object sender, EventArgs e)
@@ -197,13 +243,13 @@ namespace ToscaCIConfig
             switch (cbExecutionMode.Text)
             {
                 case "DEX":
-                    cmbxConfigs.ItemsSource = dexConfigs;
+                    cbConfigs.ItemsSource = dexConfigs;
                     break;
                 case "Remote":
-                    cmbxConfigs.ItemsSource = remoteConfigs;
+                    cbConfigs.ItemsSource = remoteConfigs;
                     break;
                 case "Local":
-                    cmbxConfigs.ItemsSource = localConfigs;
+                    cbConfigs.ItemsSource = localConfigs;
                     break;
             }
         }

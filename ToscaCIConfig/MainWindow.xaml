@@ -6,22 +6,21 @@
         xmlns:local="clr-namespace:ToscaCIConfig"
         xmlns:toscaCiConfig="clr-namespace:ToscaCIConfig"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="720" Width="1024" MinWidth="800">
 
-        <Window.Resources>
-            <local:RemoveIndexToBoolConverter x:Key="RemoveIndexToBoolConverterKey"></local:RemoveIndexToBoolConverter>
-            
+    <Window.Resources>
+        <local:RemoveIndexToBoolConverter x:Key="RemoveIndexToBoolConverterKey"/>
     </Window.Resources>
 
-<Grid Background = "White">
+    <Grid 
+        Background = "#FFF6F6F6">
         <Grid.RowDefinitions>
             <RowDefinition Height = "*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width = "200"/>
-            <ColumnDefinition Width="27*"></ColumnDefinition>
-            <ColumnDefinition Width="269*"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Rectangle Grid.Column="0">
@@ -29,80 +28,182 @@
                 <SolidColorBrush Color="#FF4085FF"></SolidColorBrush>
             </Rectangle.Fill>
         </Rectangle>
-
-        <StackPanel Grid.Column = "0" Grid.Row = "0">
-            <Label Name="ExecutionModeLabel" Content="Execution Mode"  VerticalAlignment = "Top" HorizontalAlignment="Left">
-                <Label.Foreground>Azure</Label.Foreground>
-            </Label>
+        <StackPanel 
+            Grid.Column = "0" 
+            Grid.Row = "0">
+            <Label 
+                Name="ExecutionModeLabel" 
+                Content="Execution Mode"  
+                VerticalAlignment = "Top" 
+                HorizontalAlignment="Left"
+                Foreground="White"/>
             <ComboBox Name="cbExecutionMode" 
                       Margin="10, 0, 10, 10" 
                       SelectedIndex="0" 
                       SelectedValuePath="Content"
-                      DropDownClosed="CbExecutionMode_OnDropDownClosed">
+                      DropDownClosed="CbExecutionMode_OnDropDownClosed"
+                      Background="White">
                 <ComboBoxItem Name="Dex">DEX</ComboBoxItem>
                 <ComboBoxItem Name="Remote">Remote</ComboBoxItem>
                 <ComboBoxItem Name="Local">Local</ComboBoxItem>
             </ComboBox>
-
-            <Label x:Name="lConfiguration" Content = "Configuration"  VerticalAlignment = "Top" HorizontalAlignment="Left">
-                <Label.Foreground>Azure</Label.Foreground>
-            </Label>
+            <Label 
+                Name="lConfiguration" 
+                Content="Configuration"  
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Left"
+                Foreground="White"/>
             <ComboBox 
                 Margin="10,0" 
-                x:Name="cmbxConfigs" 
+                Name="cbConfigs" 
                 ItemsSource="{Binding _configs}" 
                 DisplayMemberPath="ConfigName"
                 IsTextSearchEnabled="False"
                 IsEditable="True"
-                DropDownClosed="CmbxConfigs_OnDropDownClosed">
+                DropDownClosed="cbConfigs_OnDropDownClosed">
             </ComboBox>
-
             <Label Content="{Binding SelectedConfig.Name}"/>
-            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                <Button x:Name="NewConfig" Click="NewConfig_OnClick" IsEnabled="{Binding ElementName=cmbxConfigs, Path=Text.Length}" Content="New" Width="50" Margin="5, 0, 5, 5" Background="White"></Button>
-                <Button x:Name="RemoveConfig" Click="RemoveConfig_OnClick" IsEnabled="{Binding ElementName=cmbxConfigs, Path=SelectedItem, Converter={StaticResource RemoveIndexToBoolConverterKey}}" Content="Remove" Width="70" Height="25" Margin="0, 0, 10,5" HorizontalAlignment="Right" Background="White"></Button>
-
+            <StackPanel 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom">
+                <Button 
+                    Name="NewConfig" 
+                    Click="NewConfig_OnClick" 
+                    IsEnabled="{Binding ElementName=cmbxConfigs, Path=Text.Length}" 
+                    Content="New" 
+                    Background="White" 
+                    Width="50" 
+                    Margin="5, 0, 5, 5"/>
+                <Button 
+                    Name="RemoveConfig" 
+                    Click="RemoveConfig_OnClick" 
+                    IsEnabled="{Binding ElementName=cmbxConfigs, Path=SelectedItem, Converter={StaticResource RemoveIndexToBoolConverterKey}}" 
+                    Content="Remove" 
+                    Width="70" 
+                    Height="25" 
+                    Margin="0, 0, 10,5" 
+                    HorizontalAlignment="Right" 
+                    Background="White"/>
             </StackPanel>
         </StackPanel>
+        <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" Margin="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="295*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="250"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="250"/>
+                    <RowDefinition Height="35"/>
+                </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="1" Margin="5" Grid.ColumnSpan="2">
-
-            <StackPanel>
-                <Label Name="tbEvents" Content="Executions"></Label>
-                <ListView Name="lvExecutions" Margin="5" VerticalContentAlignment="Stretch">
+                <Label 
+                    Grid.Row="0" 
+                    Name="tbEvents" 
+                    Content="Executions" 
+                    Grid.ColumnSpan="2"/>
+                <ListView 
+                    Grid.Row="1" 
+                    Name="lvExecutions" 
+                    Margin="5,5,5,0" 
+                    Grid.ColumnSpan="2">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="NodePath" Width="120" DisplayMemberBinding="{Binding NodePath}" />
-                            <GridViewColumn Header="SurrogateId" Width="120" DisplayMemberBinding="{Binding SurrogateId}" />
+                            <GridViewColumn 
+                                Header="NodePath/SurrogateId" 
+                                Width="180" 
+                                DisplayMemberBinding="{Binding execution}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
+                <DockPanel 
+                    Grid.Row="2" 
+                    HorizontalAlignment="Right" 
+                    Margin="5">
+                    <TextBox 
+                        Name="tbExecution" 
+                        Height="25" 
+                        Width="452"/>
+                    <Button 
+                        Content="+" 
+                        Width="28"  
+                        Height="25" 
+                        Background="White" 
+                        Foreground="Gray" 
+                        FontWeight="Bold"/>
+                </DockPanel>
 
-                <Label Name="tbProperties" Content="Properties"></Label>
-                <ListView Name="lvProperties" Margin="5" VerticalContentAlignment="Stretch">
+                <Label 
+                    Grid.Row="3" 
+                    Name="tbProperties" 
+                    Content="Properties" 
+                    Grid.ColumnSpan="2"/>
+                <ListView 
+                    Grid.Row="4" 
+                    Name="lvProperties" 
+                    Margin="5,5,5,0" 
+                    Grid.ColumnSpan="2">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Property" Width="120" DisplayMemberBinding="{Binding Name}" />
-                            <GridViewColumn Header="Value" Width="150" DisplayMemberBinding="{Binding Value}" />
+                            <GridViewColumn Header="Property" Width="180" DisplayMemberBinding="{Binding Name}" />
+                            <GridViewColumn Header="Value" Width="180" DisplayMemberBinding="{Binding Value}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
+                <DockPanel Grid.Row="5" HorizontalAlignment="Right" Margin="5">
+                    <ComboBox
+                        Name="cbCustomProperties" 
+                        Width="200"
+                        Margin="2,0" 
+                        ItemsSource="{Binding cbCustomProperties}" 
+                        DisplayMemberPath="ConfigName"
+                        IsTextSearchEnabled="False"
+                        IsEditable="True">
+                    </ComboBox>
+                    <TextBox 
+                        Name="tbPropertyValue" 
+                        Height="25" 
+                        Width="250"/>
+                    <Button 
+                        Content="+" 
+                        Width="28"  
+                        Height="25" 
+                        Background="White" 
+                        Foreground="Gray" 
+                        FontWeight="Bold"/>
+                </DockPanel>
 
-            </StackPanel>
+            </Grid>
 
-        </StackPanel>
-
-
-        <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Background="GhostWhite" Grid.ColumnSpan="2">
+        </ScrollViewer>
+        <DockPanel 
+            Grid.Column="1" 
+            VerticalAlignment="Bottom" 
+            Background="white"
+            Grid.ColumnSpan="2">
             <StackPanel  HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <StackPanel  Orientation="Horizontal">
-                    <DockPanel Width="411">
-                    </DockPanel>
-                    <Rectangle Stretch="UniformToFill"></Rectangle>
-                    <Button x:Name="Cancel" Content="Cancel" Width="80" Height="25"  Margin="5" Background="White"></Button>
-                    <Button x:Name="Ok" Content="OK" Width="80" Height="25"  Margin="5, 5, 10, 5" Background="White"></Button>
+                    <Button 
+                        Name="Cancel" 
+                        Content="Cancel" 
+                        Width="80" 
+                        Height="25"  
+                        Margin="5,5,2,5" 
+                        Background="White"/>
+                    <Button 
+                        Name="Ok" 
+                        Content="OK" 
+                        Width="80" 
+                        Height="25"  
+                        Margin="0,5,5,5" 
+                        Background="#FF4085FF"
+                        Foreground="White"/>
                 </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </DockPanel>
     </Grid>
 </Window>

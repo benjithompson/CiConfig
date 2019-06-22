@@ -8,13 +8,12 @@ namespace ToscaCIConfig
 {
     internal class Execution
     {
-        public Execution(string nodePath, string surrogateId)
+        public Execution(string execution)
         {
-            this.NodePath = nodePath;
-            this.SurrogateId = surrogateId;
+            this.execution = execution;
+
         }
-        public string NodePath { get; set; }
-        public string SurrogateId { get; set; }
+        public string execution { get; set; }
     }
 }
 
