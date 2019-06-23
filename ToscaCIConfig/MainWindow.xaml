@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToscaCIConfig"
         xmlns:toscaCiConfig="clr-namespace:ToscaCIConfig"
+        xmlns:toscaCiConfigConverters="clr-namespace:ToscaCIConfigConverters"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1024" MinWidth="800">
 
     <Window.Resources>
-        <local:RemoveIndexToBoolConverter x:Key="RemoveIndexToBoolConverterKey"/>
+        <toscaCiConfigConverters:IndexToBoolConverter x:Key="IndexToBoolConverterKey"/>
+        <toscaCiConfigConverters:BooleanAndConverter x:Key="BooleanAndConverter"/>
     </Window.Resources>
 
     <Grid 
@@ -56,7 +58,6 @@
             <ComboBox 
                 Margin="10,0" 
                 Name="cbConfigs" 
-                ItemsSource="{Binding _configs}" 
                 DisplayMemberPath="ConfigName"
                 IsTextSearchEnabled="False"
                 IsEditable="True"
@@ -70,7 +71,7 @@
                 <Button 
                     Name="NewConfig" 
                     Click="NewConfig_OnClick" 
-                    IsEnabled="{Binding ElementName=cmbxConfigs, Path=Text.Length}" 
+                    IsEnabled="{Binding ElementName=cbConfigs, Path=Text.Length}" 
                     Content="New" 
                     Background="White" 
                     Width="50" 
@@ -78,7 +79,7 @@
                 <Button 
                     Name="RemoveConfig" 
                     Click="RemoveConfig_OnClick" 
-                    IsEnabled="{Binding ElementName=cmbxConfigs, Path=SelectedItem, Converter={StaticResource RemoveIndexToBoolConverterKey}}" 
+                    IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}" 
                     Content="Remove" 
                     Width="70" 
                     Height="25" 
@@ -100,7 +101,6 @@
                     <RowDefinition Height="250"/>
                     <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
-
                 <Label 
                     Grid.Row="0" 
                     Name="tbEvents" 
@@ -127,19 +127,25 @@
                     <TextBox 
                         Name="tbExecution" 
                         Height="25" 
-                        Width="452"/>
+                        Width="452"
+                        PreviewKeyDown="TbExecution_OnPreviewKeyDown">
+                    </TextBox>
                     <Button 
+                        Name="buttonExecution"
                         Content="+" 
                         Width="28"  
                         Height="25" 
                         Background="White" 
                         Foreground="Gray" 
-                        FontWeight="Bold"/>
+                        FontWeight="Bold"
+                        BorderBrush="#FF4085FF"
+                        IsEnabled="{Binding ElementName=tbExecution, Path=Text.Length}" 
+                        Click="SubmitExecution_OnClick"/>
                 </DockPanel>
 
                 <Label 
                     Grid.Row="3" 
-                    Name="tbProperties" 
+                    Name="labelProperties" 
                     Content="Properties" 
                     Grid.ColumnSpan="2"/>
                 <ListView 
@@ -159,23 +165,34 @@
                         Name="cbCustomProperties" 
                         Width="200"
                         Margin="2,0" 
-                        ItemsSource="{Binding cbCustomProperties}" 
-                        DisplayMemberPath="ConfigName"
                         IsTextSearchEnabled="False"
-                        IsEditable="True">
+                        IsEditable="True"
+                        DropDownClosed="CbCustomProperties_OnDropDownClosed"
+                        PreviewKeyDown="CbCustomProperties_OnPreviewKeyDown">
                     </ComboBox>
                     <TextBox 
-                        Name="tbPropertyValue" 
+                        Name="tbProperty" 
                         Height="25" 
-                        Width="250"/>
-                    <Button 
+                        Width="250"
+                        PreviewKeyDown="TbProperty_OnPreviewKeyDown"/>
+                    <Button
+                        Name="buttonProperty"
                         Content="+" 
                         Width="28"  
                         Height="25" 
                         Background="White" 
                         Foreground="Gray" 
-                        FontWeight="Bold"/>
-                </DockPanel>
+                        FontWeight="Bold"
+                        BorderBrush="#FF4085FF"
+                        Click="SubmitProperty_OnClick" VerticalAlignment="Bottom" Margin="0,0,0,1">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                <Binding ElementName="tbProperty" Path="Text.Length"/>
+                                <Binding ElementName="cbCustomProperties" Path="Text.Length"/>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
+            </DockPanel>
 
             </Grid>
 
@@ -188,20 +205,21 @@
             <StackPanel  HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <StackPanel  Orientation="Horizontal">
                     <Button 
-                        Name="Cancel" 
+                        Name="buttonCancel" 
                         Content="Cancel" 
                         Width="80" 
                         Height="25"  
                         Margin="5,5,2,5" 
                         Background="White"/>
                     <Button 
-                        Name="Ok" 
+                        Name="buttonOk" 
                         Content="OK" 
                         Width="80" 
                         Height="25"  
                         Margin="0,5,5,5" 
                         Background="#FF4085FF"
-                        Foreground="White"/>
+                        Foreground="White"
+                        Click="ButtonOk_OnClick"/>
                 </StackPanel>
             </StackPanel>
         </DockPanel>

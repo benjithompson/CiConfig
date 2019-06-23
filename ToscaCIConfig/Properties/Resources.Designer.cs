@@ -61,7 +61,7 @@ namespace ToscaCIConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot; ?&gt;
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
         ///&lt;testConfiguration&gt;
         ///    &lt;!-- TestEvent by Nodepath or SurrogateID --&gt;
         ///    &lt;TestEvents&gt;
@@ -80,7 +80,7 @@ namespace ToscaCIConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot; ?&gt;
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
         ///&lt;testConfiguration&gt;
         ///    &lt;!-- ExecutionList by Nodepath or SurrogateID --&gt;
         ///    &lt;ExecutionTypes&gt;

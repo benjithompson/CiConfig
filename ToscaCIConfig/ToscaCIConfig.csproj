@@ -63,9 +63,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Converters.cs" />
     <Compile Include="Execution.cs" />
     <Compile Include="ConfigWriter.cs" />
     <Compile Include="CustomProperty.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="TestConfig.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
