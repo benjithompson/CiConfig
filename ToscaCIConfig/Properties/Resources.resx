@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DEX" xml:space="preserve">
-    <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+    <value>&lt;?xml version="1.0"?&gt;
 &lt;testConfiguration&gt;
     &lt;!-- TestEvent by Nodepath or SurrogateID --&gt;
     &lt;TestEvents&gt;
@@ -131,7 +131,7 @@
 &lt;/testConfiguration&gt;</value>
   </data>
   <data name="Remote" xml:space="preserve">
-    <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+    <value>&lt;?xml version="1.0"?&gt;
 &lt;testConfiguration&gt;
     &lt;!-- ExecutionList by Nodepath or SurrogateID --&gt;
     &lt;ExecutionTypes&gt;

@@ -57,12 +57,11 @@
                 Foreground="White"/>
             <ComboBox 
                 Margin="10,0" 
-                Name="cbConfigs" 
+                x:Name="cbConfigs" 
                 DisplayMemberPath="ConfigName"
                 IsTextSearchEnabled="False"
                 IsEditable="True"
-                DropDownClosed="cbConfigs_OnDropDownClosed">
-            </ComboBox>
+                DropDownClosed="cbConfigs_OnDropDownClosed"/>
             <Label Content="{Binding SelectedConfig.Name}"/>
             <StackPanel 
                 Orientation="Horizontal" 
@@ -88,10 +87,12 @@
                     Background="White"/>
             </StackPanel>
         </StackPanel>
+
         <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" Margin="5">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="295*"/>
+                    <ColumnDefinition Width="277*"/>
+                    <ColumnDefinition Width="512*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
@@ -110,7 +111,8 @@
                     Grid.Row="1" 
                     Name="lvExecutions" 
                     Margin="5,5,5,0" 
-                    Grid.ColumnSpan="2">
+                    Grid.ColumnSpan="2"
+                    IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn 
@@ -123,7 +125,7 @@
                 <DockPanel 
                     Grid.Row="2" 
                     HorizontalAlignment="Right" 
-                    Margin="5">
+                    Margin="0,5,5,5" Grid.Column="1">
                     <TextBox 
                         Name="tbExecution" 
                         Height="25" 
@@ -142,7 +144,6 @@
                         IsEnabled="{Binding ElementName=tbExecution, Path=Text.Length}" 
                         Click="SubmitExecution_OnClick"/>
                 </DockPanel>
-
                 <Label 
                     Grid.Row="3" 
                     Name="labelProperties" 
@@ -152,7 +153,8 @@
                     Grid.Row="4" 
                     Name="lvProperties" 
                     Margin="5,5,5,0" 
-                    Grid.ColumnSpan="2">
+                    Grid.ColumnSpan="2"
+                    IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Property" Width="180" DisplayMemberBinding="{Binding Name}" />
@@ -160,7 +162,7 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <DockPanel Grid.Row="5" HorizontalAlignment="Right" Margin="5">
+                <DockPanel Grid.Row="5" HorizontalAlignment="Right" Margin="0,5,5,5" Grid.Column="1">
                     <ComboBox
                         Name="cbCustomProperties" 
                         Width="200"
@@ -192,10 +194,8 @@
                             </MultiBinding>
                         </Button.IsEnabled>
                     </Button>
-            </DockPanel>
-
+                </DockPanel>
             </Grid>
-
         </ScrollViewer>
         <DockPanel 
             Grid.Column="1" 

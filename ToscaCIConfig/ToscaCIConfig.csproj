@@ -63,6 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ConfigurationState.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="Execution.cs" />
     <Compile Include="ConfigWriter.cs" />

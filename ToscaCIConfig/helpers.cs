@@ -63,21 +63,76 @@ namespace ToscaCIConfig
             }
         }
 
-        public static void writeTestConfigFromList(ObservableCollection<Execution> list)
+        public static XmlNodeList getPropertiesListFromTestConfigFile(string configDir, string configname, string executionmode)
         {
-            Console.WriteLine(list.GetType());
-            foreach (var executionObj in list)
+
+            var configpath = configDir + executionmode + "_" + configname + ".xml";
+            XmlDocument configDoc = new XmlDocument();
+            try
             {
-                
-                writeExecutionsToTestConfigFile(executionObj.execution);
+                configDoc.Load(configpath);
+                XmlNodeList customPropertyList = configDoc.GetElementsByTagName("property");
+                for (int i = 0; i < customPropertyList.Count; i++)
+                {
+                    Console.WriteLine(customPropertyList[i].InnerText);
+                }
+
+                return customPropertyList;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
 
-        private static void writeExecutionsToTestConfigFile(string executionid)
+        public static ObservableCollection<Execution> getExecutionCollectionFromNodeList(XmlNodeList nodelist)
         {
-
+            var c = new ObservableCollection<Execution>();
+            for (int i = 0; i < nodelist.Count; i++)
+            {
+                if (nodelist[i].InnerText != "")
+                {
+                    c.Add(new Execution(nodelist[i].InnerText));
+                }
+            }
+            return c;
         }
 
-        
+        public static ObservableCollection<CustomProperty> getPropertyCollectionFromNodeList(XmlNodeList nodelist)
+        {
+            var c = new ObservableCollection<CustomProperty>();
+            for (int i = 0; i < nodelist.Count; i++)
+            {
+                if (nodelist[i].InnerText != "")
+                {
+                    c.Add(new CustomProperty(nodelist[i].Attributes["name"].Value,nodelist[i].InnerText));
+                }
+            }
+            return c;
+        }
+
+        public static void writeTestConfigXmlFromList(string dir, string configName, string mode, ObservableCollection<Execution> el, ObservableCollection<CustomProperty> prop)
+        {
+            foreach (var executionObj in el)
+            {
+                writeListViewsToTestConfigFile(executionObj.execution);
+            }
+            foreach (var propertyObj in prop)
+            {
+                writeListViewsToTestConfigFile(propertyObj.Name, propertyObj.Value);
+            }
+        }
+
+        private static void writeListViewsToTestConfigFile(string executionid)
+        {
+            
+            Console.WriteLine("todo: write execution string to xml");
+        }
+
+        private static void writeListViewsToTestConfigFile(string propertyName, string propertyValue)
+        {
+            Console.WriteLine("todo: write propertyname and value to xml");
+        }
     }
 }
