@@ -7,7 +7,7 @@
         xmlns:toscaCiConfig="clr-namespace:ToscaCIConfig"
         xmlns:toscaCiConfigConverters="clr-namespace:ToscaCIConfigConverters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1024" MinWidth="800">
+        Title="CI Editor" Height="720" Width="1024" MinWidth="750" Background="AliceBlue">
 
     <Window.Resources>
         <toscaCiConfigConverters:IndexToBoolConverter x:Key="IndexToBoolConverterKey"/>
@@ -15,7 +15,7 @@
     </Window.Resources>
 
     <Grid 
-        Background = "#FFF6F6F6">
+        Background = "#E0E0E0">
         <Grid.RowDefinitions>
             <RowDefinition Height = "*" />
         </Grid.RowDefinitions>
@@ -27,7 +27,7 @@
 
         <Rectangle Grid.Column="0">
             <Rectangle.Fill>
-                <SolidColorBrush Color="#FF4085FF"></SolidColorBrush>
+                <SolidColorBrush Color="#1D63AF"></SolidColorBrush>
             </Rectangle.Fill>
         </Rectangle>
         <StackPanel 
@@ -167,7 +167,8 @@
                     <ComboBox
                         Name="cbCustomProperties" 
                         Width="200"
-                        Margin="2,0" 
+                        Margin="2,0"
+                        Height="25"
                         IsTextSearchEnabled="False"
                         IsEditable="True"
                         DropDownClosed="CbCustomProperties_OnDropDownClosed"
@@ -187,7 +188,7 @@
                         Foreground="Gray" 
                         FontWeight="Bold"
                         BorderBrush="#FF4085FF"
-                        Click="SubmitProperty_OnClick" VerticalAlignment="Bottom" Margin="0,0,0,1">
+                        Click="SubmitProperty_OnClick" VerticalAlignment="Bottom" Margin="0">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource BooleanAndConverter}">
                                 <Binding ElementName="tbProperty" Path="Text.Length"/>
@@ -218,7 +219,7 @@
                         Width="80" 
                         Height="25"  
                         Margin="0,5,5,5" 
-                        Background="#FF4085FF"
+                        Background="#1D63AF"
                         Foreground="White"
                         Click="ButtonOk_OnClick"/>
                 </StackPanel>
