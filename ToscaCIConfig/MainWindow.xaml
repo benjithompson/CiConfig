@@ -117,11 +117,12 @@
                         <GridView>
                             <GridViewColumn 
                                 Header="NodePath/SurrogateId" 
-                                Width="180" 
-                                DisplayMemberBinding="{Binding execution}"/>
+                                Width="200"
+                                DisplayMemberBinding="{Binding Path=execution}"></GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
+
                 <DockPanel 
                     Grid.Row="2" 
                     HorizontalAlignment="Right" 
@@ -157,8 +158,8 @@
                     IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Property" Width="180" DisplayMemberBinding="{Binding Name}" />
-                            <GridViewColumn Header="Value" Width="180" DisplayMemberBinding="{Binding Value}" />
+                            <GridViewColumn Header="Property" Width="180" DisplayMemberBinding = "{Binding Path=Name}" />
+                            <GridViewColumn Header="Value" Width="180" DisplayMemberBinding = "{Binding Path=Value}" />
                         </GridView>
                     </ListView.View>
                 </ListView>

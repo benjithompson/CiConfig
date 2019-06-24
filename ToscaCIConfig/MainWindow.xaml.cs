@@ -72,7 +72,6 @@ namespace ToscaCIConfig
 
         private void initConfigsToComboBoxFromDir()
         {
-            string executionMode = cbExecutionMode.Text;
 
             //open folder or create if doesn't exist
             Directory.CreateDirectory(configDir);
@@ -87,15 +86,15 @@ namespace ToscaCIConfig
                 {
                     filename = Helpers.RemoveExecutionMode(filename, "DEX");
                     //test file for execution mode using filename
-                    DexConfigsCollection.Add(new TestConfig(executionMode, filename, file));
+                    DexConfigsCollection.Add(new TestConfig("DEX", filename, file));
                 }else if(filename.StartsWith("Remote"))
                 {
                     filename = Helpers.RemoveExecutionMode(filename, "Remote");
-                    RemoteConfigsCollection.Add(new TestConfig(executionMode, filename, file));
+                    RemoteConfigsCollection.Add(new TestConfig("Remote", filename, file));
                 }else if (filename.StartsWith("Local"))
                 {
                     filename = Helpers.RemoveExecutionMode(filename, "Local");
-                    LocalConfigsCollection.Add(new TestConfig(executionMode, filename, file));
+                    LocalConfigsCollection.Add(new TestConfig("Local", filename, file));
                 }
             }
         }
@@ -132,7 +131,7 @@ namespace ToscaCIConfig
                 var exCollection = Helpers.getExecutionCollectionFromNodeList(exNodeList);
                 var propNodeList = Helpers.getPropertiesListFromTestConfigFile(configDir, testConfig.ConfigName, testConfig.ConfigType);
                 var propCollection = Helpers.getPropertyCollectionFromNodeList(propNodeList);
-                state.setConfigListViewToState("DEX", testConfig.ConfigName, exCollection, propCollection);
+                state.setConfigListViewToState("Remote", testConfig.ConfigName, exCollection, propCollection);
             }
             foreach (var testConfig in LocalConfigsCollection)
             {
@@ -140,7 +139,7 @@ namespace ToscaCIConfig
                 var exCollection = Helpers.getExecutionCollectionFromNodeList(exNodeList);
                 var propNodeList = Helpers.getPropertiesListFromTestConfigFile(configDir, testConfig.ConfigName, testConfig.ConfigType);
                 var propCollection = Helpers.getPropertyCollectionFromNodeList(propNodeList);
-                state.setConfigListViewToState("DEX", testConfig.ConfigName, exCollection, propCollection);
+                state.setConfigListViewToState("Local", testConfig.ConfigName, exCollection, propCollection);
             }
         }
 
@@ -184,16 +183,14 @@ namespace ToscaCIConfig
                     if (cbConfigs.SelectedValue != null)
                     {
                         cbConfigs.Text = (cbConfigs.SelectedValue as TestConfig).ConfigName;
+                        state.setConfigListViewToState(executionmode, configname, new ObservableCollection<Execution>(), new ObservableCollection<CustomProperty>());
+                        lvExecutions.ItemsSource = state.GetExecutionsList(executionmode, configname);
+                        lvProperties.ItemsSource = state.GetPropertiesList(executionmode, configname);
                     }
                     else
                     {
                         cbConfigs.Text = "";
                     }
-
-                    //add listview to state
-                    state.setConfigListViewToState(cbExecutionMode.Text, configname, new ObservableCollection<Execution>(), new ObservableCollection<CustomProperty>());
-                    lvProperties.ItemsSource = state.GetPropertiesList(executionmode, configname);
-                    lvExecutions.ItemsSource = state.GetExecutionsList(executionmode, configname);
                 }
             }
         }
@@ -248,8 +245,8 @@ namespace ToscaCIConfig
             {
                 Console.WriteLine("Combo dropdown closed with no selected value");
                 configName = cbConfigs.Text;
-                lvExecutions = null;
-                lvProperties = null;
+                lvExecutions.ItemsSource = null;
+                lvProperties.ItemsSource = null;
                 return;
             }
  
@@ -270,6 +267,8 @@ namespace ToscaCIConfig
             //change configs list to only show configs of that type.
             initConfigsComboBoxItemSource();
             tbEvents.Content = cbExecutionMode.Text + " Executions";
+            lvProperties.ItemsSource = state.GetPropertiesList(cbExecutionMode.Text, cbConfigs.Text);
+            lvExecutions.ItemsSource = state.GetExecutionsList(cbExecutionMode.Text, cbConfigs.Text);
         }
 
         private void CbCustomProperties_OnDropDownClosed(object sender, EventArgs e)
@@ -399,8 +398,6 @@ namespace ToscaCIConfig
                 }
                 doc.Save(path);
             }
-
-
             //Helpers.writeTestConfigXmlFromList(configDir, mode, configName, el, prop);
         }
     }

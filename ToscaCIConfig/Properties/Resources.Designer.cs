@@ -63,13 +63,9 @@ namespace ToscaCIConfig.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;testConfiguration&gt;
-        ///    &lt;!-- TestEvent by Nodepath or SurrogateID --&gt;
         ///    &lt;TestEvents&gt;
-        ///        &lt;TestEvent&gt;&lt;/TestEvent&gt;
         ///    &lt;/TestEvents&gt;
-        ///    &lt;!-- Property To match which DEX Agent initially polls TestEvent info --&gt;
         ///    &lt;customproperties&gt;
-        ///        &lt;property name=&quot;&quot;&gt;&lt;/property&gt;
         ///    &lt;/customproperties&gt;
         ///&lt;/testConfiguration&gt;.
         /// </summary>
@@ -89,6 +85,21 @@ namespace ToscaCIConfig.Properties {
         ///    &lt;!-- Property To match which ExecutionLists execute --&gt;
         ///    &lt;customproperties&gt;
         ///        &lt;property name=&quot;&quot;&gt;&lt;/property&gt;
+        ///    &lt;/customproperties&gt;
+        ///&lt;/testConfiguration&gt;.
+        /// </summary>
+        internal static string Local {
+            get {
+                return ResourceManager.GetString("Local", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;testConfiguration&gt;
+        ///    &lt;ExecutionTypes&gt;
+        ///    &lt;/ExecutionTypes&gt;
+        ///    &lt;customproperties&gt;
         ///    &lt;/customproperties&gt;
         ///&lt;/testConfiguration&gt;.
         /// </summary>

@@ -120,17 +120,13 @@
   <data name="DEX" xml:space="preserve">
     <value>&lt;?xml version="1.0"?&gt;
 &lt;testConfiguration&gt;
-    &lt;!-- TestEvent by Nodepath or SurrogateID --&gt;
     &lt;TestEvents&gt;
-        &lt;TestEvent&gt;&lt;/TestEvent&gt;
     &lt;/TestEvents&gt;
-    &lt;!-- Property To match which DEX Agent initially polls TestEvent info --&gt;
     &lt;customproperties&gt;
-        &lt;property name=""&gt;&lt;/property&gt;
     &lt;/customproperties&gt;
 &lt;/testConfiguration&gt;</value>
   </data>
-  <data name="Remote" xml:space="preserve">
+  <data name="Local" xml:space="preserve">
     <value>&lt;?xml version="1.0"?&gt;
 &lt;testConfiguration&gt;
     &lt;!-- ExecutionList by Nodepath or SurrogateID --&gt;
@@ -140,6 +136,15 @@
     &lt;!-- Property To match which ExecutionLists execute --&gt;
     &lt;customproperties&gt;
         &lt;property name=""&gt;&lt;/property&gt;
+    &lt;/customproperties&gt;
+&lt;/testConfiguration&gt;</value>
+  </data>
+  <data name="Remote" xml:space="preserve">
+    <value>&lt;?xml version="1.0"?&gt;
+&lt;testConfiguration&gt;
+    &lt;ExecutionTypes&gt;
+    &lt;/ExecutionTypes&gt;
+    &lt;customproperties&gt;
     &lt;/customproperties&gt;
 &lt;/testConfiguration&gt;</value>
   </data>
