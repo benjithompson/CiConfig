@@ -131,7 +131,8 @@
                         Name="tbExecution" 
                         Height="25" 
                         Width="452"
-                        PreviewKeyDown="TbExecution_OnPreviewKeyDown">
+                        PreviewKeyDown="TbExecution_OnPreviewKeyDown"
+                        IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}">
                     </TextBox>
                     <Button 
                         Name="buttonExecution"
@@ -142,8 +143,14 @@
                         Foreground="Gray" 
                         FontWeight="Bold"
                         BorderBrush="#FF4085FF"
-                        IsEnabled="{Binding ElementName=tbExecution, Path=Text.Length}" 
-                        Click="SubmitExecution_OnClick"/>
+                        Click="SubmitExecution_OnClick">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                <Binding ElementName="tbExecution" Path="Text.Length"/>
+                                <Binding ElementName="cbConfigs" Path="SelectedItem" Converter="{StaticResource IndexToBoolConverterKey}"/>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
                 </DockPanel>
                 <Label 
                     Grid.Row="3" 
@@ -172,13 +179,15 @@
                         IsTextSearchEnabled="False"
                         IsEditable="True"
                         DropDownClosed="CbCustomProperties_OnDropDownClosed"
-                        PreviewKeyDown="CbCustomProperties_OnPreviewKeyDown">
+                        PreviewKeyDown="CbCustomProperties_OnPreviewKeyDown"
+                        IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}">
                     </ComboBox>
                     <TextBox 
                         Name="tbProperty" 
                         Height="25" 
                         Width="250"
-                        PreviewKeyDown="TbProperty_OnPreviewKeyDown"/>
+                        PreviewKeyDown="TbProperty_OnPreviewKeyDown"
+                        IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}"/>
                     <Button
                         Name="buttonProperty"
                         Content="+" 
@@ -193,6 +202,7 @@
                             <MultiBinding Converter="{StaticResource BooleanAndConverter}">
                                 <Binding ElementName="tbProperty" Path="Text.Length"/>
                                 <Binding ElementName="cbCustomProperties" Path="Text.Length"/>
+                                <Binding ElementName="cbConfigs" Path="SelectedItem" Converter="{StaticResource IndexToBoolConverterKey}"/>
                             </MultiBinding>
                         </Button.IsEnabled>
                     </Button>

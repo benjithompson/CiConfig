@@ -147,7 +147,6 @@ namespace ToscaCIConfig
         {
             var configname = cbConfigs.Text;
             var executionmode = cbExecutionMode.Text;
-            var filename = executionmode + "_" + configname;
 
             ObservableCollection<TestConfig> configs;
 
@@ -168,29 +167,15 @@ namespace ToscaCIConfig
 
             if (!matches.Any() && configname != "")
             {
-                var path = configDir + executionmode + "_" + configname + ".xml";
-                MessageBoxResult msgBoxResult = MessageBox.Show("Creating TestConfig at " + path, "New TestConfig", MessageBoxButton.OKCancel);
+                MessageBoxResult msgBoxResult = MessageBox.Show("Creating TestConfig " + configname, "New TestConfig", MessageBoxButton.OKCancel);
                 if (msgBoxResult == MessageBoxResult.OK)
                 {
-                    configs.Add(new TestConfig(executionmode, configname, path));
-                    using (StreamWriter file =
-                        new StreamWriter(path))
-                    {
-                        file.Write(Properties.Resources.ResourceManager.GetString(executionmode));
-                    }
+                    configs.Add(new TestConfig(executionmode, configname, ""));
 
-                    
-                    if (cbConfigs.SelectedValue != null)
-                    {
-                        cbConfigs.Text = (cbConfigs.SelectedValue as TestConfig).ConfigName;
-                        state.setConfigListViewToState(executionmode, configname, new ObservableCollection<Execution>(), new ObservableCollection<CustomProperty>());
-                        lvExecutions.ItemsSource = state.GetExecutionsList(executionmode, configname);
-                        lvProperties.ItemsSource = state.GetPropertiesList(executionmode, configname);
-                    }
-                    else
-                    {
-                        cbConfigs.Text = "";
-                    }
+                    state.setConfigListViewToState(executionmode, configname, new ObservableCollection<Execution>(), new ObservableCollection<CustomProperty>());
+                    cbConfigs.SelectedItem = "";
+                    lvExecutions.ItemsSource = state.GetExecutionsList(executionmode, configname);
+                    lvProperties.ItemsSource = state.GetPropertiesList(executionmode, configname);
                 }
             }
         }
@@ -315,10 +300,8 @@ namespace ToscaCIConfig
                 if (Helpers.MatchesExecutionPattern(executionText))
                 {
                     Console.WriteLine("Adding execution to ListView");
-                    //TODO State Collection
                     executionsList.Add(new Execution(executionText));
                     lvExecutions.ItemsSource = executionsList;
-                    //state.setConfigListViewToState();
                 }
                 else
                 {
@@ -375,6 +358,12 @@ namespace ToscaCIConfig
             var el = state.GetExecutionsList(cbExecutionMode.Text, cbConfigs.Text);
             var prop = state.GetPropertiesList(cbExecutionMode.Text, cbConfigs.Text);
             var path = configDir + mode + "_" + configName + ".xml";
+
+            using (StreamWriter file =
+                new StreamWriter(path))
+            {
+                file.Write(Properties.Resources.ResourceManager.GetString(mode));
+            }
 
             // load the XML file into an XElement
             XDocument doc = XDocument.Load(path);
