@@ -59,7 +59,7 @@
                 Margin="10,0" 
                 x:Name="cbConfigs" 
                 DisplayMemberPath="ConfigName"
-                IsTextSearchEnabled="False"
+                IsTextSearchEnabled="True"
                 IsEditable="True"
                 DropDownClosed="cbConfigs_OnDropDownClosed"/>
             <Label Content="{Binding SelectedConfig.Name}"/>
@@ -70,7 +70,6 @@
                 <Button 
                     Name="NewConfig" 
                     Click="NewConfig_OnClick" 
-                    IsEnabled="{Binding ElementName=cbConfigs, Path=Text.Length}" 
                     Content="New" 
                     Background="White" 
                     Width="50" 

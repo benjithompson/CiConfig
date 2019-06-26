@@ -173,12 +173,13 @@ namespace ToscaCIConfig
                     configs.Add(new TestConfig(executionmode, configname, ""));
 
                     state.setConfigListViewToState(executionmode, configname, new ObservableCollection<Execution>(), new ObservableCollection<CustomProperty>());
-                    cbConfigs.SelectedItem = "";
+                    cbConfigs.Text = "";
                     lvExecutions.ItemsSource = state.GetExecutionsList(executionmode, configname);
                     lvProperties.ItemsSource = state.GetPropertiesList(executionmode, configname);
                 }
             }
         }
+
 
         //Events
 
@@ -305,7 +306,7 @@ namespace ToscaCIConfig
                 }
                 else
                 {
-                    Console.WriteLine("Execution doesn't match NodePath or surrogateId");
+                    Console.WriteLine("Execution doesn't match NodePath or surrogateId syntax. Check the Tosca object nodepath or Unique ID again...");
                     MessageBoxResult messageBoxResult = MessageBox.Show("'"+ executionText + "' doesn't match NodePath or SurrogateId", "Incorrect Execution Entered", MessageBoxButton.OK);
 
                 }
@@ -332,8 +333,8 @@ namespace ToscaCIConfig
             if (nameMatches && valueMatches)
             {
                 Console.WriteLine("listview already contains name and value pair");
-                Console.WriteLine("Adding CustomProperty to ListView");
-                prop.Add(new CustomProperty(propertyName, propertyValue));
+                MessageBoxResult messageBoxResult = MessageBox.Show("'" + propertyName + "' already exists in list.", "Duplicate execution entered", MessageBoxButton.OK);
+                //prop.Add(new CustomProperty(propertyName, propertyValue));
             }
             else
             {
