@@ -12,7 +12,15 @@ namespace ToscaCIConfigConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value != null;
+            if (value != null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+          
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
