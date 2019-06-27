@@ -26,7 +26,7 @@ namespace ToscaCIConfig
 {
     public partial class MainWindow : Window
     {
-        ConfigurationState state = new ConfigurationState("defaultState");
+        public ConfigurationState state = new ConfigurationState("defaultState");
         
         private ObservableCollection<TestConfig> DexConfigsCollection;
         private ObservableCollection<TestConfig> RemoteConfigsCollection;
@@ -145,7 +145,6 @@ namespace ToscaCIConfig
 
         private void NewConfig_OnClick(object sender, RoutedEventArgs e)
         {
-            var configname = cbConfigs.Text;
             var executionmode = cbExecutionMode.Text;
 
             ObservableCollection<TestConfig> configs;
@@ -164,28 +163,21 @@ namespace ToscaCIConfig
             }
 
             // Instantiate the dialog box
-            Window1 dlg = new Window1();
+            Window1 dlg = new Window1(configs);
 
             // Configure the dialog box
             dlg.Owner = this;
 
             // Open the dialog box modally 
-            dlg.Show();
-
-            var matches = configs.Where(p => p.ConfigName == configname);
-
-            if (!matches.Any() && configname != "")
+            if ((bool)dlg.ShowDialog())
             {
-                MessageBoxResult msgBoxResult = MessageBox.Show("Creating TestConfig " + configname, "New TestConfig", MessageBoxButton.OKCancel);
-                if (msgBoxResult == MessageBoxResult.OK)
-                {
-                    configs.Add(new TestConfig(executionmode, configname, ""));
+                var configname = cbConfigs.Text;
+                configs.Add(new TestConfig(executionmode, configname, ""));
 
-                    state.setConfigListViewToState(executionmode, configname, new ObservableCollection<Execution>(), new ObservableCollection<CustomProperty>());
-                    cbConfigs.Text = "";
-                    lvExecutions.ItemsSource = state.GetExecutionsList(executionmode, configname);
-                    lvProperties.ItemsSource = state.GetPropertiesList(executionmode, configname);
-                }
+                state.setConfigListViewToState(executionmode, configname, new ObservableCollection<Execution>(), new ObservableCollection<CustomProperty>());
+                cbConfigs.Text = "";
+                lvExecutions.ItemsSource = state.GetExecutionsList(executionmode, configname);
+                lvProperties.ItemsSource = state.GetPropertiesList(executionmode, configname);
             }
         }
 

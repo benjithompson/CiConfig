@@ -6,16 +6,18 @@
         xmlns:local="clr-namespace:ToscaCIConfig"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
-        Title="Window1" Height="160" Width="400">
+        Title="Create New Test Config" Height="200" Width="410">
     <Grid>
         <StackPanel>
-            <Label Content="Enter new Test Config Name" Margin="10">
+            <Label Content="Enter new Test Config Name" Margin="10,10,10,5">
             </Label>
-            <TextBox Name="tbConfigName" VerticalAlignment="Center" Height="25" Margin="20,0,20,10"></TextBox>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,15,0">
-                <Button Name="cancelButton" Content="Cancel" Margin="5" Width="80" Height="25" IsDefault="True"></Button>
-                <Button Name="okButton" Content="OK" Margin="5" Width="80" Foreground="White" Background="#1D63AF" IsCancel="True"></Button>
+            <TextBox Name="tbConfigName" TextChanged="textChangedEventHandler" VerticalAlignment="Center" Height="25" Margin="20,0,20,5"></TextBox>
+            <Label Name="lStatus" Content="" HorizontalAlignment="Right" Margin="20,0,20,5" Foreground="Red"  FontSize="10"></Label>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="15,5,15,0">
+                <Button Name="cancelButton" Content="Cancel" IsCancel="True" Margin="5" Width="80" Height="25" ></Button>
+                <Button Name="okButton" IsDefault="True" Click="okButton_onClick" Content="OK" Margin="5" Width="80" Foreground="White" Background="#1D63AF"></Button>
             </StackPanel>
+            
         </StackPanel>
     </Grid>
 </Window>
