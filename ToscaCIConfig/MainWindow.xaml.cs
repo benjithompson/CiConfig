@@ -163,6 +163,15 @@ namespace ToscaCIConfig
                 configs = LocalConfigsCollection;
             }
 
+            // Instantiate the dialog box
+            Window1 dlg = new Window1();
+
+            // Configure the dialog box
+            dlg.Owner = this;
+
+            // Open the dialog box modally 
+            dlg.Show();
+
             var matches = configs.Where(p => p.ConfigName == configname);
 
             if (!matches.Any() && configname != "")

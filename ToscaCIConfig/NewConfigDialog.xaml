@@ -5,18 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToscaCIConfig"
         mc:Ignorable="d"
-        Title="Window1" Height="150" Width="480">
+        WindowStartupLocation="CenterOwner"
+        Title="Window1" Height="160" Width="400">
     <Grid>
         <StackPanel>
             <Label Content="Enter new Test Config Name" Margin="10">
             </Label>
-            <TextBox VerticalAlignment="Center" Height="25" Margin="20,0,20,10"></TextBox>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,30,0">
-                <Button Content="Cancel" Margin="5" Width="80" Height="25"></Button>
-                <Button Content="OK" Margin="5" Width="80" Foreground="White" Background="#1D63AF"></Button>
+            <TextBox Name="tbConfigName" VerticalAlignment="Center" Height="25" Margin="20,0,20,10"></TextBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,15,0">
+                <Button Name="cancelButton" Content="Cancel" Margin="5" Width="80" Height="25" IsDefault="True"></Button>
+                <Button Name="okButton" Content="OK" Margin="5" Width="80" Foreground="White" Background="#1D63AF" IsCancel="True"></Button>
             </StackPanel>
         </StackPanel>
-
-        
     </Grid>
 </Window>

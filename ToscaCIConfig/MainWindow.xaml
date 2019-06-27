@@ -90,8 +90,7 @@
         <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" Margin="5">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="277*"/>
-                    <ColumnDefinition Width="512*"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
@@ -104,13 +103,11 @@
                 <Label 
                     Grid.Row="0" 
                     Name="tbEvents" 
-                    Content="Executions" 
-                    Grid.ColumnSpan="2"/>
+                    Content="Executions"/>
                 <ListView 
                     Grid.Row="1" 
                     Name="lvExecutions" 
-                    Margin="5,5,5,0" 
-                    Grid.ColumnSpan="2"
+                    Margin="5,5,5,0"
                     IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}">
                     <ListView.View>
                         <GridView>
@@ -125,7 +122,7 @@
                 <DockPanel 
                     Grid.Row="2" 
                     HorizontalAlignment="Right" 
-                    Margin="0,5,5,5" Grid.Column="1">
+                    Margin="0,5,5,5">
                     <TextBox 
                         Name="tbExecution" 
                         Height="25" 
@@ -154,13 +151,11 @@
                 <Label 
                     Grid.Row="3" 
                     Name="labelProperties" 
-                    Content="Properties" 
-                    Grid.ColumnSpan="2"/>
+                    Content="Properties"/>
                 <ListView 
                     Grid.Row="4" 
                     Name="lvProperties" 
-                    Margin="5,5,5,0" 
-                    Grid.ColumnSpan="2"
+                    Margin="5,5,5,0"
                     IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}">
                     <ListView.View>
                         <GridView>
@@ -169,7 +164,7 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <DockPanel Grid.Row="5" HorizontalAlignment="Right" Margin="0,5,5,5" Grid.Column="1">
+                <DockPanel Grid.Row="5" HorizontalAlignment="Right" Margin="0,5,5,5">
                     <ComboBox
                         Name="cbCustomProperties" 
                         Width="200"
