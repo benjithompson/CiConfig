@@ -61,7 +61,9 @@
                 DisplayMemberPath="ConfigName"
                 IsTextSearchEnabled="True"
                 IsEditable="True"
-                DropDownClosed="cbConfigs_OnDropDownClosed"/>
+                SelectionChanged="cbConfigs_OnDropDownClosed"
+                IsSynchronizedWithCurrentItem="True"
+                SelectedIndex="0" />
             <Label Content="{Binding SelectedConfig.Name}"/>
             <StackPanel 
                 Orientation="Horizontal" 
@@ -216,7 +218,8 @@
                         Width="80" 
                         Height="25"  
                         Margin="5,5,2,5" 
-                        Background="White"/>
+                        Background="White"
+                        IsCancel="True"/>
                     <Button 
                         Name="buttonOk" 
                         Content="OK" 
