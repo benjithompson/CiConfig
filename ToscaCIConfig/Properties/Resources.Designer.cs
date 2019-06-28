@@ -65,8 +65,8 @@ namespace ToscaCIConfig.Properties {
         ///&lt;testConfiguration&gt;
         ///    &lt;TestEvents&gt;
         ///    &lt;/TestEvents&gt;
-        ///    &lt;customproperties&gt;
-        ///    &lt;/customproperties&gt;
+        ///    &lt;customProperties&gt;
+        ///    &lt;/customProperties&gt;
         ///&lt;/testConfiguration&gt;.
         /// </summary>
         internal static string DEX {
@@ -78,14 +78,10 @@ namespace ToscaCIConfig.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;testConfiguration&gt;
-        ///    &lt;!-- ExecutionList by Nodepath or SurrogateID --&gt;
         ///    &lt;ExecutionTypes&gt;
-        ///        &lt;ExecutionType&gt;&lt;/ExecutionType&gt;
         ///    &lt;/ExecutionTypes&gt;
-        ///    &lt;!-- Property To match which ExecutionLists execute --&gt;
-        ///    &lt;customproperties&gt;
-        ///        &lt;property name=&quot;&quot;&gt;&lt;/property&gt;
-        ///    &lt;/customproperties&gt;
+        ///    &lt;customProperties&gt;
+        ///    &lt;/customProperties&gt;
         ///&lt;/testConfiguration&gt;.
         /// </summary>
         internal static string Local {
@@ -99,8 +95,8 @@ namespace ToscaCIConfig.Properties {
         ///&lt;testConfiguration&gt;
         ///    &lt;ExecutionTypes&gt;
         ///    &lt;/ExecutionTypes&gt;
-        ///    &lt;customproperties&gt;
-        ///    &lt;/customproperties&gt;
+        ///    &lt;customProperties&gt;
+        ///    &lt;/customProperties&gt;
         ///&lt;/testConfiguration&gt;.
         /// </summary>
         internal static string Remote {
