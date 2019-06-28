@@ -40,27 +40,40 @@ namespace ToscaCIConfig
             return filename;
         }
 
+        //Todo: SurrogateIDs, ignoreNonMatchingIds, buildrootfolder, cleanoldresults, testmandatename
         public static XmlNodeList getExecutionsListFromTestConfigFile(string configDir, string configname, string executionmode)
         {
 
             var configpath = configDir + executionmode + "_" + configname + ".xml";
+            XmlNodeList exList = null;
             XmlDocument configDoc = new XmlDocument();
             try
             {
                 configDoc.Load(configpath);
-                XmlNodeList testEventsList = configDoc.GetElementsByTagName("TestEvent");
-                for (int i = 0; i < testEventsList.Count; i++)
+                if (executionmode == "DEX")
                 {
-                    Console.WriteLine(testEventsList[i].InnerText);
+                    exList = configDoc.GetElementsByTagName("TestEvent");
+                    for (int i = 0; i < exList.Count; i++)
+                    {
+                        Console.WriteLine(exList[i].InnerText);
+                    }
                 }
-
-                return testEventsList;
+                else
+                {
+                    exList = configDoc.GetElementsByTagName("ExecutionTypes");
+                    for (int i = 0; i < exList.Count; i++)
+                    {
+                        Console.WriteLine(exList[i].InnerText);
+                    }
+                }  
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
+
+            return exList;
         }
 
         public static XmlNodeList getPropertiesListFromTestConfigFile(string configDir, string configname, string executionmode)
@@ -71,7 +84,7 @@ namespace ToscaCIConfig
             try
             {
                 configDoc.Load(configpath);
-                XmlNodeList customPropertyList = configDoc.GetElementsByTagName("property");
+                XmlNodeList customPropertyList = configDoc.GetElementsByTagName("customProperty");
                 for (int i = 0; i < customPropertyList.Count; i++)
                 {
                     Console.WriteLine(customPropertyList[i].InnerText);
