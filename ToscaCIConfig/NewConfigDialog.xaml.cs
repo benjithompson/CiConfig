@@ -17,14 +17,15 @@ namespace ToscaCIConfig
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class NewConfigDialog : Window
     {
         ObservableCollection<TestConfig> configs;
         public bool isValid;
-        public Window1(ObservableCollection<TestConfig> configs)
+        public NewConfigDialog(ObservableCollection<TestConfig> configs)
         {
             InitializeComponent();
             this.configs = configs;
+            tbConfigName.Focus();
         }
 
         private void okButton_onClick(object sender, RoutedEventArgs e)
@@ -33,7 +34,7 @@ namespace ToscaCIConfig
             if (IsValid(this))
             {
                 Console.WriteLine("is valid");
-                this.DialogResult = true;
+                DialogResult = true;
                 var cbConfig = ((MainWindow)Application.Current.MainWindow).cbConfigs;
                 cbConfig.Text = tbConfigName.Text;
                 return;
@@ -41,9 +42,6 @@ namespace ToscaCIConfig
 
             lStatus.Content = "Config Name already exists or is empty";
             DialogResult = null;
-            return;
-
-
         }
 
         private void textChangedEventHandler(object sender, RoutedEventArgs e)
@@ -54,11 +52,12 @@ namespace ToscaCIConfig
         private bool IsValid(DependencyObject node)
         {
             var configname = tbConfigName.Text;
-            var matches = configs.Where(p => p.ConfigName == configname);
+            var matches = configs.Where(p => p.Name == configname);
 
             if (!matches.Any() && configname != "")
                 return true;
             return false;
         }
+
     }
 }
