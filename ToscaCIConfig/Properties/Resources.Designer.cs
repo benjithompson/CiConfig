@@ -80,8 +80,14 @@ namespace ToscaCIConfig.Properties {
         ///&lt;testConfiguration&gt;
         ///    &lt;ExecutionTypes&gt;
         ///    &lt;/ExecutionTypes&gt;
+        ///    &lt;surrogateIds&gt;
+        ///    &lt;/surrogateIds&gt;
         ///    &lt;customProperties&gt;
         ///    &lt;/customProperties&gt;
+        ///    &lt;ignoreNonMatchingIds&gt;&lt;/ignoreNonMatchingIds&gt;
+        ///    &lt;buildrootfolder&gt;&lt;/buildrootfolder&gt;
+        ///    &lt;cleanoldresults&gt;&lt;/cleanoldresults&gt;
+        ///    &lt;testMandateName&gt;&lt;/testMandateName&gt;
         ///&lt;/testConfiguration&gt;.
         /// </summary>
         internal static string Local {
@@ -95,8 +101,14 @@ namespace ToscaCIConfig.Properties {
         ///&lt;testConfiguration&gt;
         ///    &lt;ExecutionTypes&gt;
         ///    &lt;/ExecutionTypes&gt;
+        ///    &lt;surrogateIds&gt;
+        ///    &lt;/surrogateIds&gt;
         ///    &lt;customProperties&gt;
         ///    &lt;/customProperties&gt;
+        ///    &lt;ignoreNonMatchingIds&gt;&lt;/ignoreNonMatchingIds&gt;
+        ///    &lt;buildrootfolder&gt;&lt;/buildrootfolder&gt;
+        ///    &lt;cleanoldresults&gt;&lt;/cleanoldresults&gt;
+        ///    &lt;testMandateName&gt;&lt;/testMandateName&gt;
         ///&lt;/testConfiguration&gt;.
         /// </summary>
         internal static string Remote {
