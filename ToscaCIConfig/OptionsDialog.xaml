@@ -1,0 +1,28 @@
+﻿<Window x:Class="ToscaCIConfig.OptionsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToscaCIConfig"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="Configuration Options" Height="400" Width="410">
+    <Grid>
+        <StackPanel>
+            <Label Content="Ignore Non Matching SurrogateIDs" Margin="10,10,10,5"/>
+            <RadioButton Name="rbIgnoreTrue" GroupName="rbIgnoreNonMatchingIds" IsChecked="True" Content="True" Margin="20,0,0,0"/>
+            <RadioButton Name="rbIgnoreFalse" GroupName="rbIgnoreNonMatchingIds" Content="False" Margin="20,5,0,0"/>
+            <Label Content="Clean Old Results" Margin="10,10,10,5"/>
+            <RadioButton Name="rbCleanTrue" GroupName="rbCleanOldResults" IsChecked="True" Content="True" Margin="20,0,0,0"/>
+            <RadioButton Name="rbCleanFalse" GroupName="rbCleanOldResults" Content="False" Margin="20,5,0,0"/>
+            <Label Content="Build Root Folder" Margin="10,10,10,5"/>
+            <TextBox Name="tbBuildRootFolder" VerticalAlignment="Center" Height="25" Margin="20,0,20,5"></TextBox>
+            <Label Content="Test Mandate Name" Margin="10,10,10,5"/>
+            <TextBox Name="tbTestMandateName" VerticalAlignment="Center" Height="25" Margin="20,0,20,5"></TextBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="15,5,15,0">
+                <Button Name="cancelButton" Content="Cancel" IsCancel="True" Margin="5" Width="80" Height="25" Background="White"></Button>
+                <Button Name="okButton" IsDefault="True" Click="okButton_onClick" Content="OK" Margin="5" Width="80" Foreground="White" Background="#1D63AF"></Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
