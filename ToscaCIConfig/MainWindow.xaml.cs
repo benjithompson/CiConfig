@@ -31,12 +31,14 @@ namespace ToscaCIConfig
     {
         public ConfigurationState state = new ConfigurationState("defaultState");
 
-        private ObservableCollection<TestConfig> DexConfigsCollection;
-        private ObservableCollection<TestConfig> RemoteConfigsCollection;
-        private ObservableCollection<TestConfig> LocalConfigsCollection;
+        public ObservableCollection<TestConfig> DexConfigsCollection;
+        public ObservableCollection<TestConfig> RemoteConfigsCollection;
+        public ObservableCollection<TestConfig> LocalConfigsCollection;
         private ObservableCollection<string> PropertyNamesCollection;
 
         private string configDir = "C:\\CiConfigs\\";
+
+        public string executionModeHeader = "";
 
         public MainWindow()
         {
@@ -45,16 +47,18 @@ namespace ToscaCIConfig
             var mode = cbExecutionMode.Text;
             var configname = cbConfigs.Text;
 
+            setListViewHeader(mode);
+
             //Mode and Configurations
             DexConfigsCollection = new ObservableCollection<TestConfig>();
             RemoteConfigsCollection = new ObservableCollection<TestConfig>();
             LocalConfigsCollection = new ObservableCollection<TestConfig>();
-            initConfigsToComboBoxFromDir();
-            initListViewCollections();
+            initConfigCollectionsFromConfigFile();
+            InitState();
             initConfigsComboBoxItemSource();
 
             //ExecutionsCollection and Properties
-            tbEvents.Content = cbExecutionMode.Text + " Executions";
+            tbEvents.Content = mode + " Executions";
             PropertyNamesCollection = new ObservableCollection<string>();
             cbCustomProperties.ItemsSource = PropertyNamesCollection;
         }
@@ -73,34 +77,34 @@ namespace ToscaCIConfig
             };
         }
 
-        private void initConfigsToComboBoxFromDir()
+        private void initConfigCollectionsFromConfigFile()
         {
 
             //open folder or create if doesn't exist
             Directory.CreateDirectory(configDir);
             foreach (string file in Directory.EnumerateFiles(configDir, "*.xml"))
             {
-                var filename = Path.GetFileNameWithoutExtension(file);
-                if (filename == null)
+                var configName = Path.GetFileNameWithoutExtension(file);
+                if (configName == null)
                 {
                     return;
                 }
 
-                if (filename.StartsWith("DEX"))
+                if (configName.StartsWith("DEX"))
                 {
-                    filename = Helpers.RemoveExecutionMode(filename, "DEX");
+                    configName = Helpers.RemoveExecutionMode(configName, "DEX");
                     //test file for execution mode using filename
-                    DexConfigsCollection.Add(new TestConfig("DEX", filename, file));
+                    DexConfigsCollection.Add(new TestConfig("DEX", configName, file));
                 }
-                else if (filename.StartsWith("Remote"))
+                else if (configName.StartsWith("Remote"))
                 {
-                    filename = Helpers.RemoveExecutionMode(filename, "Remote");
-                    RemoteConfigsCollection.Add(new TestConfig("Remote", filename, file));
+                    configName = Helpers.RemoveExecutionMode(configName, "Remote");
+                    RemoteConfigsCollection.Add(new TestConfig("Remote", configName, file));
                 }
-                else if (filename.StartsWith("Local"))
+                else if (configName.StartsWith("Local"))
                 {
-                    filename = Helpers.RemoveExecutionMode(filename, "Local");
-                    LocalConfigsCollection.Add(new TestConfig("Local", filename, file));
+                    configName = Helpers.RemoveExecutionMode(configName, "Local");
+                    LocalConfigsCollection.Add(new TestConfig("Local", configName, file));
                 }
             }
         }
@@ -121,45 +125,55 @@ namespace ToscaCIConfig
             }
         }
 
-        private void initListViewCollections()
+        private void InitState()
         {
             foreach (var testConfig in DexConfigsCollection)
             {
                 var exNodeList =
-                    Helpers.getExecutionsListFromTestConfigFile(configDir, testConfig.ConfigName,
-                        testConfig.ConfigType);
-                var exCollection = Helpers.getExecutionCollectionFromNodeList(exNodeList);
+                    Helpers.getExecutionsNodeListFromTestConfigFile(configDir, testConfig.Name,
+                        testConfig.Mode);
+                var exCollection = Helpers.GetExecutionCollectionFromNodeList(exNodeList);
                 var propNodeList =
-                    Helpers.getPropertiesListFromTestConfigFile(configDir, testConfig.ConfigName,
-                        testConfig.ConfigType);
-                var propCollection = Helpers.getPropertyCollectionFromNodeList(propNodeList);
-                state.setConfigListViewToState("DEX", testConfig.ConfigName, exCollection, propCollection);
+                    Helpers.getPropertiesNodeListFromTestConfigFile(configDir, testConfig.Name,
+                        testConfig.Mode);
+                var propCollection = Helpers.GetPropertyCollectionFromNodeList(propNodeList);
+                
+                //Todo: Handle SurrogateIDs
+                state.setStateCollections("DEX", testConfig.Name, exCollection, propCollection);
             }
 
             foreach (var testConfig in RemoteConfigsCollection)
             {
                 var exNodeList =
-                    Helpers.getExecutionsListFromTestConfigFile(configDir, testConfig.ConfigName,
-                        testConfig.ConfigType);
-                var exCollection = Helpers.getExecutionCollectionFromNodeList(exNodeList);
+                    Helpers.getExecutionsNodeListFromTestConfigFile(configDir, testConfig.Name,
+                        testConfig.Mode);
+                var exCollection = Helpers.GetExecutionCollectionFromNodeList(exNodeList);
                 var propNodeList =
-                    Helpers.getPropertiesListFromTestConfigFile(configDir, testConfig.ConfigName,
-                        testConfig.ConfigType);
-                var propCollection = Helpers.getPropertyCollectionFromNodeList(propNodeList);
-                state.setConfigListViewToState("Remote", testConfig.ConfigName, exCollection, propCollection);
+                    Helpers.getPropertiesNodeListFromTestConfigFile(configDir, testConfig.Name,
+                        testConfig.Mode);
+                var propCollection = Helpers.GetPropertyCollectionFromNodeList(propNodeList);
+                //Todo:get options
+                var surrogateList =
+                    Helpers.getSurrogateIdsNodeListFromTestConfigFile(configDir, testConfig.Name, testConfig.Mode,
+                        "surrogateIds");
+                var surrogateIdsCollection = Helpers.GetSurrogateIdsCollectionFromNodeList(surrogateList);
+                Helpers.setTestConfigOptionsFromFile(testConfig);
+                state.setStateCollections("Remote", testConfig.Name, exCollection, propCollection);
             }
 
             foreach (var testConfig in LocalConfigsCollection)
             {
                 var exNodeList =
-                    Helpers.getExecutionsListFromTestConfigFile(configDir, testConfig.ConfigName,
-                        testConfig.ConfigType);
-                var exCollection = Helpers.getExecutionCollectionFromNodeList(exNodeList);
+                    Helpers.getExecutionsNodeListFromTestConfigFile(configDir, testConfig.Name,
+                        testConfig.Mode);
+                var exCollection = Helpers.GetExecutionCollectionFromNodeList(exNodeList);
                 var propNodeList =
-                    Helpers.getPropertiesListFromTestConfigFile(configDir, testConfig.ConfigName,
-                        testConfig.ConfigType);
-                var propCollection = Helpers.getPropertyCollectionFromNodeList(propNodeList);
-                state.setConfigListViewToState("Local", testConfig.ConfigName, exCollection, propCollection);
+                    Helpers.getPropertiesNodeListFromTestConfigFile(configDir, testConfig.Name,
+                        testConfig.Mode);
+                var propCollection = Helpers.GetPropertyCollectionFromNodeList(propNodeList);
+                //Todo:get options
+                Helpers.setTestConfigOptionsFromFile(testConfig);
+                state.setStateCollections("Local", testConfig.Name, exCollection, propCollection);
             }
         }
 
@@ -184,31 +198,30 @@ namespace ToscaCIConfig
             return ciclient + " " + mode + config;
         }
 
+        private void setListViewHeader(string mode)
+        {
+            if (mode == "DEX")
+            {
+                ((GridView)lvExecutions.View).Columns[0].Header = "NodePath/SurrogateId";
+            }
+            else
+            {
+                ((GridView)lvExecutions.View).Columns[0].Header = "Execution Type";
+            }
+        }
+
 
 
         //Events
 
         private void NewConfig_OnClick(object sender, RoutedEventArgs e)
         {
-            var executionmode = cbExecutionMode.Text;
-
-            ObservableCollection<TestConfig> configs;
-
-            if (executionmode == "DEX")
-            {
-                configs = DexConfigsCollection;
-            }
-            else if (executionmode == "Remote")
-            {
-                configs = RemoteConfigsCollection;
-            }
-            else
-            {
-                configs = LocalConfigsCollection;
-            }
+            var mode = cbExecutionMode.Text;
+            var configname = "";
+            ObservableCollection<TestConfig> configs = Helpers.GetTestConfigsCollection(mode);
 
             // Instantiate the dialog box
-            Window1 dlg = new Window1(configs);
+            NewConfigDialog dlg = new NewConfigDialog(configs);
 
             // Configure the dialog box
             dlg.Owner = this;
@@ -216,34 +229,22 @@ namespace ToscaCIConfig
             // Open the dialog box modally 
             if ((bool) dlg.ShowDialog())
             {
-                var configname = cbConfigs.Text;
-                configs.Add(new TestConfig(executionmode, configname, ""));
+                configname = cbConfigs.Text;
+                configs.Add(new TestConfig(mode, configname, configDir));
 
-                state.setConfigListViewToState(executionmode, configname, new ObservableCollection<Execution>(),
+                state.setStateCollections(mode, configname, new ObservableCollection<Execution>(),
                     new ObservableCollection<CustomProperty>());
                 cbConfigs.Text = "";
-                lvExecutions.ItemsSource = state.GetExecutionsList(executionmode, configname);
-                lvProperties.ItemsSource = state.GetPropertiesList(executionmode, configname);
+                lvExecutions.ItemsSource = state.GetExecutionsList(mode, configname);
+                lvProperties.ItemsSource = state.GetPropertiesList(mode, configname);
             }
         }
 
         private void RemoveConfig_OnClick(object sender, RoutedEventArgs e)
         {
-            var executionmode = cbExecutionMode.Text;
-            ObservableCollection<TestConfig> configs;
-
-            if (executionmode == "DEX")
-            {
-                configs = DexConfigsCollection;
-            }
-            else if (executionmode == "Remote")
-            {
-                configs = RemoteConfigsCollection;
-            }
-            else
-            {
-                configs = LocalConfigsCollection;
-            }
+            var mode = cbExecutionMode.Text;
+            var configname = cbConfigs.Text;
+            ObservableCollection<TestConfig> configs = Helpers.GetTestConfigsCollection(mode);
 
             if (cbConfigs.Text != "")
             {
@@ -251,16 +252,16 @@ namespace ToscaCIConfig
                     MessageBox.Show("Are you sure?", "Delete TestConfig?", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    var configname = cbConfigs.Text;
-                    var matches = configs.Where(p => p.ConfigName == configname);
-                    if (matches.Any())
+                    
+                    var match = Helpers.GetTestConfig(mode, configname);
+                    if (match != null)
                     {
-                        var path = matches.First().ConfigPath;
+                        var path = match.Path;
                         File.Delete(path);
-                        configs.Remove(matches.First());
+                        configs.Remove(match);
                     }
 
-                    state.RemoveConfigListViewFromState(executionmode, configname);
+                    state.RemoveConfigListViewFromState(mode, configname);
 
                     lvExecutions.ItemsSource = null;
                     lvProperties.ItemsSource = null;
@@ -270,41 +271,47 @@ namespace ToscaCIConfig
 
         private void cbConfigs_OnDropDownClosed(object sender, EventArgs e)
         {
-            string configName;
+            string name = "";
+            string mode = cbExecutionMode.Text;
 
             if (((sender as ComboBox).SelectedValue as TestConfig) == null)
             {
                 Console.WriteLine("Combo dropdown closed with no selected value");
-                configName = cbConfigs.Text;
+                name = cbConfigs.Text;
                 lvExecutions.ItemsSource = null;
                 lvProperties.ItemsSource = null;
                 return;
             }
 
-            configName = ((sender as ComboBox).SelectedValue as TestConfig).ConfigName;
-            Console.WriteLine("Combobox dropdown closed with value " + configName);
+            name = ((sender as ComboBox).SelectedValue as TestConfig).Name;
+            Console.WriteLine("Combobox dropdown closed with value " + name);
             //cbConfigs.Text = configName;
 
-            var exCollection = state.GetExecutionsList(cbExecutionMode.Text, configName);
-            var propCollection = state.GetPropertiesList(cbExecutionMode.Text, configName);
+            var exCollection = state.GetExecutionsList(mode, name);
+            var propCollection = state.GetPropertiesList(mode, name);
 
             lvExecutions.ItemsSource = exCollection;
             lvProperties.ItemsSource = propCollection;
+            setListViewHeader(mode);
         }
 
         private void CbExecutionMode_OnDropDownClosed(object sender, EventArgs e)
         {
             Console.WriteLine("Dropdown closed with value " + cbExecutionMode.Text);
+
+            var mode = cbExecutionMode.Text;
+            var configname = cbConfigs.Text;
+
             //change configs list to only show configs of that type.
             initConfigsComboBoxItemSource();
             tbEvents.Content = cbExecutionMode.Text + " Executions";
-            lvProperties.ItemsSource = state.GetPropertiesList(cbExecutionMode.Text, cbConfigs.Text);
-            lvExecutions.ItemsSource = state.GetExecutionsList(cbExecutionMode.Text, cbConfigs.Text);
+            lvProperties.ItemsSource = state.GetPropertiesList(mode, configname);
+            lvExecutions.ItemsSource = state.GetExecutionsList(mode, configname);
         }
 
         private void CbCustomProperties_OnDropDownClosed(object sender, EventArgs e)
         {
-            Console.WriteLine("Property Combobox closed with value " + cbCustomProperties.Text);
+            Console.WriteLine(@"Property Combobox closed with value " + cbCustomProperties.Text);
 
         }
 
@@ -312,13 +319,13 @@ namespace ToscaCIConfig
         {
             if (e.Key == Key.Delete)
             {
-                Console.WriteLine("Delete Key pressed on property combobox");
+                Console.WriteLine(@"Delete Key pressed on property combobox");
                 PropertyNamesCollection.Remove(cbCustomProperties.Text);
             }
 
             if (e.Key == Key.Enter)
             {
-                Console.WriteLine("EnterKey Pressed on property combobox");
+                Console.WriteLine(@"EnterKey Pressed on property combobox");
                 if (!PropertyNamesCollection.Contains(cbCustomProperties.Text))
                 {
                     PropertyNamesCollection.Add(cbCustomProperties.Text);
@@ -334,22 +341,30 @@ namespace ToscaCIConfig
             var executionMatches = executionsList.Any(p => p.execution == executionText);
             if (!executionMatches)
             {
-
-                if (Helpers.MatchesExecutionPattern(executionText))
+                if (cbExecutionMode.Text == "DEX")
+                {
+                    if (Helpers.ExecutionPatternIsValid(executionText))
+                    {
+                        Console.WriteLine("Adding execution to ListView");
+                        executionsList.Add(new Execution(executionText));
+                        lvExecutions.ItemsSource = executionsList;
+                    }
+                    else
+                    {
+                        Console.WriteLine(
+                            "TestEvents require NodePath or surrogateId. Make sure the nodepath or SurrogateID is correct.");
+                        MessageBoxResult messageBoxResult =
+                            MessageBox.Show("'" + executionText + "' doesn't match NodePath or SurrogateId",
+                                "Incorrect Execution for DEX Entered", MessageBoxButton.OK);
+                    }
+                }
+                else
                 {
                     Console.WriteLine("Adding execution to ListView");
                     executionsList.Add(new Execution(executionText));
                     lvExecutions.ItemsSource = executionsList;
                 }
-                else
-                {
-                    Console.WriteLine(
-                        "Execution doesn't match NodePath or surrogateId syntax. Check the Tosca object nodepath or Unique ID again...");
-                    MessageBoxResult messageBoxResult =
-                        MessageBox.Show("'" + executionText + "' doesn't match NodePath or SurrogateId",
-                            "Incorrect Execution Entered", MessageBoxButton.OK);
 
-                }
             }
             else
             {
@@ -357,8 +372,6 @@ namespace ToscaCIConfig
                 MessageBoxResult messageBoxResult = MessageBox.Show("'" + executionText + "' already exists in list.",
                     "Duplicate execution entered", MessageBoxButton.OK);
             }
-
-
         }
 
         private void SubmitProperty_OnClick(object sender, RoutedEventArgs e)
@@ -412,6 +425,8 @@ namespace ToscaCIConfig
                 return;
             }
             SaveConfigFiles();
+            MessageBoxResult msgsave =
+                MessageBox.Show("Test Config saved to file!", "File Saved", MessageBoxButton.OK);
 
         }
 
@@ -419,26 +434,28 @@ namespace ToscaCIConfig
         {
             foreach (var config in DexConfigsCollection)
             {
-                SaveConfigFile(config.ConfigName, config.ConfigType);
+                SaveConfigFile(config.Name, config.Mode);
             }
 
             foreach (var config in RemoteConfigsCollection)
             {
-                SaveConfigFile(config.ConfigName, config.ConfigType);
+                SaveConfigFile(config.Name, config.Mode);
             }
 
             foreach (var config in LocalConfigsCollection)
             {
-                SaveConfigFile(config.ConfigName, config.ConfigType);
+                SaveConfigFile(config.Name, config.Mode);
             }
         }
 
         public void SaveConfigFile(string configName, string mode)
         {
+            var config = Helpers.GetTestConfig(mode, configName);
             var el = state.GetExecutionsList(mode, configName);
             var prop = state.GetPropertiesList(mode, configName);
             var path = configDir + mode + "_" + configName + ".xml";
             XElement executions;
+            XElement surrogateIds;
             using (StreamWriter file =
                 new StreamWriter(path))
             {
@@ -448,33 +465,30 @@ namespace ToscaCIConfig
             // load the XML file into an XElement
             XDocument doc = XDocument.Load(path);
 
-            if (mode == "DEX")
+            foreach (var ex in el)
             {
-                executions = doc.Descendants("TestEvents").FirstOrDefault();
-                if (executions != null)
+                if (mode == "DEX")
                 {
-                    foreach (var ex in el)
-                    {
-                        executions.Add(new XElement("TestEvent", ex.execution));
-                    }
+                    executions = doc.Descendants("TestEvents").First();
+                    executions.Add(new XElement("TestEvent", ex.execution));
 
                 }
-            }
-            else
-            {
-                executions = doc.Descendants("ExecutionTypes").FirstOrDefault();
-                if (executions != null)
+                else
                 {
-                    foreach (var ex in el)
+                    executions = doc.Descendants("ExecutionTypes").First();
+                    surrogateIds = doc.Descendants("surrogateIds").First();
+                    if (Helpers.IsSurrogateId(ex.execution))
                     {
-                        executions.Add(new XElement("ExecutionType", ex.execution));
+                        surrogateIds.Add(new XElement("surrogateId", ex.execution));
                     }
-
+                    else
+                    {
+                        executions.Add(new XElement("EventTypes", ex.execution));
+                    }
                 }
             }
 
-
-            var customProperties = doc.Descendants("customProperties").FirstOrDefault();
+            var customProperties = doc.Descendants("customProperties").First();
             if (customProperties != null)
             {
                 foreach (var cp in prop)
@@ -483,7 +497,97 @@ namespace ToscaCIConfig
                 }
 
             }
+
+            if (config.Mode != "DEX")
+            {
+                try
+                {
+                    var option = doc.Descendants("ignoreNonMatchingIds").First();
+                    option.Value = config.ignoreNonMatchingSurrogateIds.ToString();
+                    option = doc.Descendants("buildrootfolder").First();
+                    option.Value = config.BuildRootFolder;
+                    option = doc.Descendants("cleanoldresults").First();
+                    option.Value = config.CleanOldResults.ToString();
+                    option = doc.Descendants("testMandateName").First();
+                    option.Value = config.TestMandateName;
+                }
+                catch (Exception e)
+                {
+                    
+                    Console.WriteLine("Option not found.");
+                }
+
+            }
+                
             doc.Save(path);
+        }
+
+        private void ButtonOptions_OnClick(object sender, RoutedEventArgs e)
+        {
+
+            //open options dialog
+            if (cbConfigs.Text == "")
+            {
+                MessageBoxResult messageBoxResult =
+                    MessageBox.Show("Load a Test Local or Remote Config for Options.", "Error", MessageBoxButton.OK);
+                return;
+            }
+
+            if (cbExecutionMode.Text == "DEX")
+            {
+                MessageBoxResult messageBoxResult =
+                    MessageBox.Show("DEX doesn't have options", "Error", MessageBoxButton.OK);
+                return;
+            }
+
+            OptionsDialog dlg = new OptionsDialog();
+            dlg.ShowDialog();
+        }
+
+        private void LvExecutions_RemoveSelectedItems(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key == Key.Delete)
+            {
+                var mode = cbExecutionMode.Text;
+                var name = cbConfigs.Text;
+                var exList = state.GetExecutionsList(mode, name);
+                List<Execution> RemovedItems = new List<Execution>();
+                foreach (Execution removedItem in lvExecutions.SelectedItems)
+                {
+                    RemovedItems.Add(removedItem);
+                }
+
+                foreach (var removedItem in RemovedItems)
+                {
+                    exList.Remove(removedItem);
+                }
+
+                lvExecutions.Items.Refresh();
+            }
+
+        }
+
+        private void LvProperties_RemoveSelectedItems(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                var mode = cbExecutionMode.Text;
+                var name = cbConfigs.Text;
+                var exList = state.GetPropertiesList(mode, name);
+                List<CustomProperty> RemovedItems = new List<CustomProperty>();
+                foreach (CustomProperty removedItem in lvProperties.SelectedItems)
+                {
+                    RemovedItems.Add(removedItem);
+                }
+
+                foreach (var removedItem in RemovedItems)
+                {
+                    exList.Remove(removedItem);
+                }
+
+                lvExecutions.Items.Refresh();
+            }
         }
     }
 }
