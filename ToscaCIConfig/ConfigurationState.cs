@@ -16,15 +16,13 @@ namespace ToscaCIConfig
         private Dictionary<string, ObservableCollection<CustomProperty>> PropertyCollectionDict =
             new Dictionary<string, ObservableCollection<CustomProperty>>();
 
-
-
         //Constructor
         public ConfigurationState(string stateName)
         {
             this.StateName = stateName;
         }
 
-        internal void setConfigListViewToState(string mode, string configname, ObservableCollection<Execution> executions, ObservableCollection<CustomProperty> properties)
+        internal void setStateCollections(string mode, string configname, ObservableCollection<Execution> executions, ObservableCollection<CustomProperty> properties)
         {
             var configkey = GetDictKey(mode, configname);
             //add configname as key and current collections as values
