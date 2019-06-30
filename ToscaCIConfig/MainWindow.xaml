@@ -58,7 +58,7 @@
             <ComboBox 
                 Margin="10,0" 
                 x:Name="cbConfigs" 
-                DisplayMemberPath="ConfigName"
+                DisplayMemberPath="Name"
                 IsTextSearchEnabled="True"
                 IsEditable="True"
                 SelectionChanged="cbConfigs_OnDropDownClosed"
@@ -110,13 +110,14 @@
                     Grid.Row="1" 
                     Name="lvExecutions" 
                     Margin="5,5,5,0"
-                    IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}">
+                    IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}"
+                    PreviewKeyDown="LvExecutions_RemoveSelectedItems">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn 
-                                Header="NodePath/SurrogateId" 
+                                Header="" 
                                 Width="200"
-                                DisplayMemberBinding="{Binding Path=execution}"></GridViewColumn>
+                                DisplayMemberBinding="{Binding Path=execution}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -125,6 +126,14 @@
                     Grid.Row="2" 
                     HorizontalAlignment="Right" 
                     Margin="0,5,5,5">
+                    <ComboBox
+                        Name="cbExType"
+                        Width="150"
+                        Height="25"
+                        IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}">
+                        <ComboBoxItem>SurrogateId</ComboBoxItem>
+                        <ComboBoxItem>NodePath</ComboBoxItem>
+                    </ComboBox>
                     <TextBox 
                         Name="tbExecution" 
                         Height="25" 
@@ -158,7 +167,8 @@
                     Grid.Row="4" 
                     Name="lvProperties" 
                     Margin="5,5,5,0"
-                    IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}">
+                    IsEnabled="{Binding ElementName=cbConfigs, Path=SelectedItem, Converter={StaticResource IndexToBoolConverterKey}}"
+                    PreviewKeyDown="LvProperties_RemoveSelectedItems">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Property" Width="180" DisplayMemberBinding = "{Binding Path=Name}" />
@@ -212,6 +222,14 @@
             Grid.ColumnSpan="2">
             <StackPanel  HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <StackPanel  Orientation="Horizontal">
+                    <Button
+                        Name="buttonOptions"
+                        Content="Options"
+                        Width="80"
+                        Height="25"
+                        Margin="5,5,550,5"
+                        Background="White"
+                        Click="ButtonOptions_OnClick"/>
                     <Button 
                         Name="buttonCancel" 
                         Content="Cancel" 
@@ -225,7 +243,7 @@
                         Content="OK" 
                         Width="80" 
                         Height="25"  
-                        Margin="0,5,5,5" 
+                        Margin="0,5,15,5" 
                         Background="#1D63AF"
                         Foreground="White"
                         Click="ButtonOk_OnClick"/>
