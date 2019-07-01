@@ -6,7 +6,7 @@
         xmlns:toscaCiConfig="clr-namespace:ToscaCIConfig"
         xmlns:toscaCiConfigConverters="clr-namespace:ToscaCIConfigConverters"
         mc:Ignorable="d"
-        Title="CI Editor" Height="722" Width="1024" MinWidth="750" Background="AliceBlue">
+        Title="Editor" Height="722" Width="1024" MinWidth="750" Background="AliceBlue" Icon="ciconfig.png">
 
     <Window.Resources>
         <toscaCiConfigConverters:IndexToBoolConverter x:Key="IndexToBoolConverterKey"/>
@@ -140,7 +140,7 @@
                         Background="White" 
                         Foreground="Gray" 
                         FontWeight="Bold"
-                        BorderBrush="#FF4085FF"
+                        BorderBrush="LightGray"
                         Click="SubmitExecution_OnClick">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource BooleanAndConverter}">
@@ -193,7 +193,7 @@
                         Background="White" 
                         Foreground="Gray" 
                         FontWeight="Bold"
-                        BorderBrush="#FF4085FF"
+                        BorderBrush="LightGray"
                         Click="SubmitProperty_OnClick" VerticalAlignment="Bottom" Margin="0">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource BooleanAndConverter}">
@@ -219,14 +219,16 @@
                 Height="25"
                 Margin="5,5,0,5"
                 Background="White"
+                BorderBrush="LightGray"
                 HorizontalAlignment="Left"
                 Click="ButtonOptions_OnClick"/>
             <Button 
                 Name="buttonCopy" 
-                Width="35" 
+                Width="30" 
                 Height="25"  
                 Margin="5" 
                 Background="White"
+                BorderBrush="LightGray"
                 Click="ButtonCopy_OnClick">
                 <Image Width="25" Height="22"
                        Source="copyicon.png"/>
@@ -240,6 +242,7 @@
                 Margin="5,5,5,5" 
                 Background="#1D63AF"
                 Foreground="White"
+                BorderBrush="LightGray"
                 DockPanel.Dock="Right"
                 Click="ButtonOk_OnClick"/>
             <Button 
@@ -250,6 +253,7 @@
                 Margin="5,5,0,5" 
                 DockPanel.Dock="Right"
                 Background="White"
+                BorderBrush="LightGray"
                 IsCancel="True"/>
         </DockPanel>
     </Grid>
