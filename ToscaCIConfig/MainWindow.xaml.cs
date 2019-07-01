@@ -61,6 +61,7 @@ namespace ToscaCIConfig
             tbEvents.Content = mode + " Executions";
             PropertyNamesCollection = new ObservableCollection<string>();
             cbCustomProperties.ItemsSource = PropertyNamesCollection;
+            lstatus.Content = "Ready!";
         }
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
@@ -79,7 +80,7 @@ namespace ToscaCIConfig
 
         private void initConfigCollectionsFromConfigFile()
         {
-
+            lstatus.Content = "Loading Test Configurations...";
             //open folder or create if doesn't exist
             Directory.CreateDirectory(configDir);
             foreach (string file in Directory.EnumerateFiles(configDir, "*.xml"))
@@ -127,6 +128,7 @@ namespace ToscaCIConfig
 
         private void InitState()
         {
+            lstatus.Content = "Loading Test Configurations...";
             foreach (var testConfig in DexConfigsCollection)
             {
                 var exNodeList =
@@ -237,6 +239,7 @@ namespace ToscaCIConfig
                 cbConfigs.Text = "";
                 lvExecutions.ItemsSource = state.GetExecutionsList(mode, configname);
                 lvProperties.ItemsSource = state.GetPropertiesList(mode, configname);
+                lstatus.Content = "Test Configuration '" + configname + "' created";
             }
         }
 
@@ -265,6 +268,7 @@ namespace ToscaCIConfig
 
                     lvExecutions.ItemsSource = null;
                     lvProperties.ItemsSource = null;
+                    lstatus.Content = "Test Configuration '" + configname + "' deleted";
                 }
             }
         }
@@ -293,6 +297,7 @@ namespace ToscaCIConfig
             lvExecutions.ItemsSource = exCollection;
             lvProperties.ItemsSource = propCollection;
             setListViewHeader(mode);
+            lstatus.Content = "Test Configuration changed to '" + name + "'";
         }
 
         private void CbExecutionMode_OnDropDownClosed(object sender, EventArgs e)
@@ -307,6 +312,7 @@ namespace ToscaCIConfig
             tbEvents.Content = cbExecutionMode.Text + " Executions";
             lvProperties.ItemsSource = state.GetPropertiesList(mode, configname);
             lvExecutions.ItemsSource = state.GetExecutionsList(mode, configname);
+            lstatus.Content = "Test Configuration mode changed to " + mode;
         }
 
         private void CbCustomProperties_OnDropDownClosed(object sender, EventArgs e)
@@ -321,6 +327,7 @@ namespace ToscaCIConfig
             {
                 Console.WriteLine(@"Delete Key pressed on property combobox");
                 PropertyNamesCollection.Remove(cbCustomProperties.Text);
+                lstatus.Content = "Property Removed from Combobox";
             }
 
             if (e.Key == Key.Enter)
@@ -329,6 +336,7 @@ namespace ToscaCIConfig
                 if (!PropertyNamesCollection.Contains(cbCustomProperties.Text))
                 {
                     PropertyNamesCollection.Add(cbCustomProperties.Text);
+                    lstatus.Content = "Property Name Added to Combobox";
                 }
             }
         }
@@ -348,6 +356,7 @@ namespace ToscaCIConfig
                         Console.WriteLine("Adding execution to ListView");
                         executionsList.Add(new Execution(executionText));
                         lvExecutions.ItemsSource = executionsList;
+                        lstatus.Content = "Execution Added";
                     }
                     else
                     {
@@ -363,6 +372,7 @@ namespace ToscaCIConfig
                     Console.WriteLine("Adding execution to ListView");
                     executionsList.Add(new Execution(executionText));
                     lvExecutions.ItemsSource = executionsList;
+                    
                 }
 
             }
@@ -396,6 +406,7 @@ namespace ToscaCIConfig
                 Console.WriteLine("Adding CustomProperty to ListView");
                 prop.Add(new CustomProperty(propertyName, propertyValue));
                 lvProperties.ItemsSource = prop;
+                lstatus.Content = "Property Added";
             }
         }
 
@@ -405,6 +416,7 @@ namespace ToscaCIConfig
             {
                 SubmitExecution_OnClick(sender, e);
             }
+            lstatus.Content = "Execution Added";
         }
 
         private void TbProperty_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -413,11 +425,12 @@ namespace ToscaCIConfig
             {
                 SubmitProperty_OnClick(sender, e);
             }
+            lstatus.Content = "Property Added";
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
-
+            lstatus.Content = "Saving Configurations...";
             if (cbConfigs.Text == "")
             {
                 MessageBoxResult msg =
@@ -426,12 +439,13 @@ namespace ToscaCIConfig
             }
             SaveConfigFiles();
             MessageBoxResult msgsave =
-                MessageBox.Show("Test Config saved to file!", "File Saved", MessageBoxButton.OK);
+                MessageBox.Show("Test Configs saved!", "File Saved", MessageBoxButton.OK);
 
         }
 
         public void SaveConfigFiles()
         {
+            
             foreach (var config in DexConfigsCollection)
             {
                 SaveConfigFile(config.Name, config.Mode);
@@ -450,6 +464,7 @@ namespace ToscaCIConfig
 
         public void SaveConfigFile(string configName, string mode)
         {
+            
             var config = Helpers.GetTestConfig(mode, configName);
             var el = state.GetExecutionsList(mode, configName);
             var prop = state.GetPropertiesList(mode, configName);
@@ -520,6 +535,7 @@ namespace ToscaCIConfig
             }
                 
             doc.Save(path);
+            lstatus.Content = "Test Configurations Saved to " + path;
         }
 
         private void ButtonOptions_OnClick(object sender, RoutedEventArgs e)
@@ -542,6 +558,7 @@ namespace ToscaCIConfig
 
             OptionsDialog dlg = new OptionsDialog();
             dlg.ShowDialog();
+
         }
 
         private void LvExecutions_RemoveSelectedItems(object sender, KeyEventArgs e)
@@ -563,6 +580,7 @@ namespace ToscaCIConfig
                     exList.Remove(removedItem);
                 }
 
+                lstatus.Content = "Execution Removed";
                 lvExecutions.Items.Refresh();
             }
 
@@ -586,8 +604,16 @@ namespace ToscaCIConfig
                     exList.Remove(removedItem);
                 }
 
+                lstatus.Content = "Properties Removed";
                 lvExecutions.Items.Refresh();
             }
+        }
+
+        private void ButtonCopy_OnClick(object sender, RoutedEventArgs e)
+        {
+            var cmd = GetCiClientCommandString();
+            Clipboard.SetText(cmd);
+            lstatus.Content = "CMD Copied to Clipboard!";
         }
     }
 }
