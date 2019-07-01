@@ -519,10 +519,10 @@ namespace ToscaCIConfig
                 {
                     var option = doc.Descendants("ignoreNonMatchingIds").First();
                     option.Value = config.ignoreNonMatchingSurrogateIds.ToString().ToLower();
-                    option = doc.Descendants("buildrootfolder").First();
-                    option.Value = config.BuildRootFolder;
                     option = doc.Descendants("cleanoldresults").First();
                     option.Value = config.CleanOldResults.ToString().ToLower();
+                    option = doc.Descendants("buildrootfolder").First();
+                    option.Value = config.BuildRootFolder;
                     option = doc.Descendants("testMandateName").First();
                     option.Value = config.TestMandateName;
                 }
@@ -614,7 +614,7 @@ namespace ToscaCIConfig
             if (cbConfigs.Text == "")
             {
                 lstatus.Content = "Select a Test Configuration!";
-                lstatus.Foreground = Brushes.White;
+                lstatus.Foreground = Brushes.Red;
                 return;
             }
             var cmd = GetCiClientCommandString();
