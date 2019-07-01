@@ -182,7 +182,7 @@ namespace ToscaCIConfig
 
         private string GetCiClientCommandString()
         {
-            var ciclient = "ToscaCiClient.exe";
+            var ciclient = "\"%TRICENTIS_HOME%\\ToscaCI\\Client\\ToscaCiClient.exe\"";
             var mode = "";
             var config = "";
 
