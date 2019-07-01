@@ -305,14 +305,14 @@ namespace ToscaCIConfig
             Console.WriteLine("Dropdown closed with value " + cbExecutionMode.Text);
 
             var mode = cbExecutionMode.Text;
-            var configname = cbConfigs.Text;
 
             //change configs list to only show configs of that type.
             initConfigsComboBoxItemSource();
+            var configname = cbConfigs.Text;
             tbEvents.Content = cbExecutionMode.Text + " Executions";
+            lstatus.Content = "Test Configuration mode changed to " + mode;
             lvProperties.ItemsSource = state.GetPropertiesList(mode, configname);
             lvExecutions.ItemsSource = state.GetExecutionsList(mode, configname);
-            lstatus.Content = "Test Configuration mode changed to " + mode;
         }
 
         private void CbCustomProperties_OnDropDownClosed(object sender, EventArgs e)
@@ -518,11 +518,11 @@ namespace ToscaCIConfig
                 try
                 {
                     var option = doc.Descendants("ignoreNonMatchingIds").First();
-                    option.Value = config.ignoreNonMatchingSurrogateIds.ToString();
+                    option.Value = config.ignoreNonMatchingSurrogateIds.ToString().ToLower();
                     option = doc.Descendants("buildrootfolder").First();
                     option.Value = config.BuildRootFolder;
                     option = doc.Descendants("cleanoldresults").First();
-                    option.Value = config.CleanOldResults.ToString();
+                    option.Value = config.CleanOldResults.ToString().ToLower();
                     option = doc.Descendants("testMandateName").First();
                     option.Value = config.TestMandateName;
                 }

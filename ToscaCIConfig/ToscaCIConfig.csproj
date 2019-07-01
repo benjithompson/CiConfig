@@ -147,5 +147,8 @@
   <ItemGroup>
     <Resource Include="copyicon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ciconfig.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
