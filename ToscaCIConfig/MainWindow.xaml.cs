@@ -26,6 +26,7 @@ namespace ToscaCIConfig
 {
 
     //Todo: SurrogateIDs, ignoreNonMatchingIds, buildrootfolder, cleanoldresults, testmandatename
+    //Todo: Additional Options: Paths for CiClient, Endpoint, Report.xml
 
     public partial class MainWindow : Window
     {
@@ -498,7 +499,7 @@ namespace ToscaCIConfig
                     }
                     else
                     {
-                        executions.Add(new XElement("EventTypes", ex.execution));
+                        executions.Add(new XElement("ExecutionType", ex.execution));
                     }
                 }
             }
@@ -508,7 +509,7 @@ namespace ToscaCIConfig
             {
                 foreach (var cp in prop)
                 {
-                    customProperties.Add(new XElement("customProperty", cp.Value, new XAttribute("name", cp.Name)));
+                    customProperties.Add(new XElement("property", cp.Value, new XAttribute("name", cp.Name)));
                 }
 
             }
