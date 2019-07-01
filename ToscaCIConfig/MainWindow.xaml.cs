@@ -195,7 +195,7 @@ namespace ToscaCIConfig
                 mode = "-m distributed ";
             }
 
-            config = "-c " + configDir + cbExecutionMode.Text + "_" + cbConfigs.Text + ".xml ";
+            config = "-c " + "\"" + configDir + cbExecutionMode.Text + "_" + cbConfigs.Text + ".xml" + "\"";
 
             return ciclient + " " + mode + config;
         }
@@ -611,9 +611,17 @@ namespace ToscaCIConfig
 
         private void ButtonCopy_OnClick(object sender, RoutedEventArgs e)
         {
+            if (cbConfigs.Text == "")
+            {
+                lstatus.Content = "Select a Test Configuration!";
+                lstatus.Foreground = Brushes.White;
+                return;
+            }
             var cmd = GetCiClientCommandString();
-            Clipboard.SetText(cmd);
-            lstatus.Content = "CMD Copied to Clipboard!";
+
+            Clipboard.SetDataObject(cmd);
+            lstatus.Content = "ToscaCiClient CMD Copied to Clipboard!";
+            
         }
     }
 }
