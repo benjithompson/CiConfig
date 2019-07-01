@@ -155,7 +155,6 @@ namespace ToscaCIConfig
                     Helpers.getPropertiesNodeListFromTestConfigFile(configDir, testConfig.Name,
                         testConfig.Mode);
                 var propCollection = Helpers.GetPropertyCollectionFromNodeList(propNodeList);
-                //Todo:get options
                 var surrogateList =
                     Helpers.getSurrogateIdsNodeListFromTestConfigFile(configDir, testConfig.Name, testConfig.Mode,
                         "surrogateIds");

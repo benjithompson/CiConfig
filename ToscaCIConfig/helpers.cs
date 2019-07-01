@@ -186,9 +186,9 @@ namespace ToscaCIConfig
                 if (mode != "DEX")
                 {
                     modeNode = xml.GetElementsByTagName("ignoreNonMatchingIds");
-                    config.ignoreNonMatchingSurrogateIds = modeNode[0].InnerText.ToLower() == "false";
+                    config.ignoreNonMatchingSurrogateIds = modeNode[0].InnerText.ToLower() == "true";
                     modeNode = xml.GetElementsByTagName("cleanoldresults");
-                    config.CleanOldResults = modeNode[0].InnerText.ToLower() == "false";
+                    config.CleanOldResults = modeNode[0].InnerText.ToLower() == "true";
                     modeNode = xml.GetElementsByTagName("buildrootfolder");
                     config.BuildRootFolder = modeNode[0].InnerText;
                     modeNode = xml.GetElementsByTagName("testMandateName");
