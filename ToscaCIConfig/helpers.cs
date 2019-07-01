@@ -157,7 +157,7 @@ namespace ToscaCIConfig
             try
             {
                 configDoc.Load(configpath);
-                XmlNodeList customPropertyList = configDoc.GetElementsByTagName("customProperty");
+                XmlNodeList customPropertyList = configDoc.GetElementsByTagName("property");
                 for (int i = 0; i < customPropertyList.Count; i++)
                 {
                     Console.WriteLine(customPropertyList[i].InnerText);
