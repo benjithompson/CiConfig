@@ -182,22 +182,19 @@ namespace ToscaCIConfig
 
         private string GetCiClientCommandString()
         {
-            var ciclient = "\"%TRICENTIS_HOME%\\ToscaCI\\Client\\ToscaCiClient.exe\"";
-            var mode = "";
-            var config = "";
 
-            if (cbExecutionMode.Text == "Local")
-            {
-                mode = "-m local";
-            }
-            else
-            {
-                mode = "-m distributed ";
-            }
+            var mode = cbExecutionMode.Text;
+            var name = cbConfigs.Text;
+            var config = Helpers.GetTestConfig(mode, name);
+            var cipath = (config.ToscaCiClientPath != "")? "\""+ config.ToscaCiClientPath+"\"" : @"'%TRICENTIS_HOME%\ToscaCI\Client\ToscaCIClient.exe'";
+            var endpoint = (config.RemoteExecutionEndpoint != "")? " -e " + config.RemoteExecutionEndpoint: "";
+            var reportpath = (config.ReportPath != "")? " -r " + config.ReportPath: "";
+            var username = (config.CiClientUsername != "")? " -l " + config.CiClientUsername: "";
+            var password = (config.CiClientPassword != "")? " -p " + config.CiClientPassword: "";
+            var configflag = " -c " + "\"" + configDir + mode + "_" + name + ".xml" + "\"";
+            mode = (mode == "Local") ? " -m local" : " -m distributed";
 
-            config = "-c " + "\"" + configDir + cbExecutionMode.Text + "_" + cbConfigs.Text + ".xml" + "\"";
-
-            return ciclient + " " + mode + config;
+            return cipath + mode + configflag + endpoint + reportpath + username + password;
         }
 
         private void setListViewHeader(string mode)
@@ -546,13 +543,6 @@ namespace ToscaCIConfig
             {
                 MessageBoxResult messageBoxResult =
                     MessageBox.Show("Load a Test Local or Remote Config for Options.", "Error", MessageBoxButton.OK);
-                return;
-            }
-
-            if (cbExecutionMode.Text == "DEX")
-            {
-                MessageBoxResult messageBoxResult =
-                    MessageBox.Show("DEX doesn't have options", "Error", MessageBoxButton.OK);
                 return;
             }
 
