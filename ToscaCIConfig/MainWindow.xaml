@@ -21,7 +21,8 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="205*"/>
+            <ColumnDefinition Width="203*"/>
         </Grid.ColumnDefinitions>
 
         <Rectangle Grid.Column="0">
@@ -91,7 +92,7 @@
 
             </DockPanel>
         </StackPanel>
-        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Visible" Margin="5,5,5,40">
+        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Visible" Margin="5,5,5,40" Grid.ColumnSpan="2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
@@ -209,7 +210,7 @@
         <DockPanel 
             Height="35"
             Background="white"
-            Grid.ColumnSpan="2"
+            Grid.ColumnSpan="3"
             LastChildFill="False"
             VerticalAlignment="Bottom">
             <Button

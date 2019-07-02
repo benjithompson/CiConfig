@@ -15,7 +15,12 @@ namespace ToscaCIConfig
             Path = path;
             ignoreNonMatchingSurrogateIds = true;
             CleanOldResults = true;
-
+            ToscaCiClientPath = "\"C:\\Program Files (x86)\\TRICENTIS\\Tosca Testsuite\\ToscaCI\\Client\\ToscaCIClient.exe\"";
+            RemoteExecutionEndpoint = "";
+            ReportPath = "";
+            CiClientUsername = "";
+            CiClientPassword = "";
+            CiTestConfigPath = @"C:\CiConfigs\";
         }
 
         public bool ignoreNonMatchingSurrogateIds { get; set; }
@@ -25,6 +30,12 @@ namespace ToscaCIConfig
         public string Path { get; set; }
         public string BuildRootFolder { get; set; }
         public string TestMandateName { get; set; }
+        public string ToscaCiClientPath { get; set; }
+        public string RemoteExecutionEndpoint { get; set; }
+        public string ReportPath { get; set; }
+        public string CiClientUsername { get; set; }
+        public string CiClientPassword { get; set; }
+        public string CiTestConfigPath { get; set; }
 
     }
 }
