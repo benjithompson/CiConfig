@@ -16,23 +16,22 @@
     <Grid 
         Background = "#E0E0E0">
         <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
             <RowDefinition Height = "*" />
         </Grid.RowDefinitions>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="205*"/>
             <ColumnDefinition Width="203*"/>
         </Grid.ColumnDefinitions>
-
-        <Rectangle Grid.Column="0">
+        <Rectangle Grid.Column="0" Grid.Row="1">
             <Rectangle.Fill>
                 <SolidColorBrush Color="#1D63AF"></SolidColorBrush>
             </Rectangle.Fill>
         </Rectangle>
         <StackPanel 
-            Grid.Column = "0" 
-            Grid.Row = "0">
+            Grid.Row="1"
+            Grid.Column="0">
             <Label 
                 Name="ExecutionModeLabel" 
                 Content="Execution Mode"  
@@ -69,7 +68,6 @@
                 Orientation="Horizontal" 
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Bottom">
-
                 <Button 
                     Name="NewConfig" 
                     Click="NewConfig_OnClick" 
@@ -88,18 +86,15 @@
                     HorizontalAlignment="Right" 
                     Background="White"/>
             </StackPanel>
-            <DockPanel LastChildFill="False" HorizontalAlignment="right">
-
-            </DockPanel>
         </StackPanel>
-        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Visible" Margin="5,5,5,40" Grid.ColumnSpan="2">
+        <ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Visible" Margin="5,5,5,40" Grid.ColumnSpan="2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="250"/>
                     <RowDefinition Height="35"/>
                     <RowDefinition Height="25"/>
-                    <RowDefinition Height="250"/>
+                    <RowDefinition Height="225"/>
                     <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
                 <Label 
@@ -121,7 +116,6 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-
                 <DockPanel 
                     Grid.Row="2" 
                     HorizontalAlignment="Right" 
@@ -208,9 +202,11 @@
             </Grid>
         </ScrollViewer>
         <DockPanel 
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
             Height="35"
             Background="white"
-            Grid.ColumnSpan="3"
             LastChildFill="False"
             VerticalAlignment="Bottom">
             <Button
@@ -256,6 +252,19 @@
                 Background="White"
                 BorderBrush="LightGray"
                 IsCancel="True"/>
+        </DockPanel>
+        <DockPanel 
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="3">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="File">
+                    <MenuItem Header="_Save"></MenuItem>
+                    <MenuItem Header="_Preferences"></MenuItem>
+                    <Separator/>
+                    <MenuItem Header="_Exit"></MenuItem>
+                </MenuItem>
+            </Menu>
         </DockPanel>
     </Grid>
 </Window>

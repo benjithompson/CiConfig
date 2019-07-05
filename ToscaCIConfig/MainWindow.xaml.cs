@@ -546,7 +546,7 @@ namespace ToscaCIConfig
                 return;
             }
 
-            OptionsDialog dlg = new OptionsDialog();
+            PreferencesDialog dlg = new PreferencesDialog();
             dlg.ShowDialog();
 
         }

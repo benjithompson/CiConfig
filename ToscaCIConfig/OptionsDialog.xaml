@@ -1,4 +1,4 @@
-﻿<Window x:Class="ToscaCIConfig.OptionsDialog"
+﻿<Window x:Class="ToscaCIConfig.PreferencesDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -38,7 +38,7 @@
                         <Label Content="Test Configurations Path" Margin="5,0">
                         </Label>
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Name="CiConfigPath" Margin="5,0,5,5" Width="413"  Height="25"></TextBox>
+                            <TextBox Name="tbTestConfigPath" Margin="5,0,5,5" Width="413"  Height="25"></TextBox>
                             <Button Name="buttonCIConfig" Click="ButtonOpenCIConfig_OnClick" Width="30" Height="25" Margin="0,0,5,5"></Button>
                         </StackPanel>
                         <StackPanel>
