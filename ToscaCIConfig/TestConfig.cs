@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ToscaCIConfig
 {
-    public class TestConfig
+    [Serializable()]
+    public class TestConfig : ISerializable
     {
         public TestConfig(string type, string name, string path)
         {
@@ -15,12 +17,27 @@ namespace ToscaCIConfig
             Path = path;
             ignoreNonMatchingSurrogateIds = true;
             CleanOldResults = true;
-            ToscaCiClientPath = "\"C:\\Program Files (x86)\\TRICENTIS\\Tosca Testsuite\\ToscaCI\\Client\\ToscaCIClient.exe\"";
+            ToscaCiClientPath = "";
             RemoteExecutionEndpoint = "";
             ReportPath = "";
             CiClientUsername = "";
             CiClientPassword = "";
-            CiTestConfigPath = @"C:\CiConfigs\";
+            CiTestConfigPath = "";
+        }
+
+        public TestConfig(SerializationInfo info, StreamingContext ctxt)
+        {
+            info.GetValue("Mode", typeof(string));
+            info.GetValue("Name", typeof(string));
+            info.GetValue("Path", typeof(string));
+            info.GetValue("IgnoreNonMatchingSurrogateIds", typeof(bool));
+            info.GetValue("CleanOldResults", typeof(bool));
+            info.GetValue("ToscaCiClientPath", typeof(string));
+            info.GetValue("RemoteExecutionEndpoint", typeof(string));
+            info.GetValue("ReportPath", typeof(string));
+            info.GetValue("CiClientUsername", typeof(string));
+            info.GetValue("CiClientPassword", typeof(string));
+            info.GetValue("CiTestConfigPath", typeof(string));
         }
 
         public bool ignoreNonMatchingSurrogateIds { get; set; }
@@ -37,5 +54,20 @@ namespace ToscaCIConfig
         public string CiClientPassword { get; set; }
         public string CiTestConfigPath { get; set; }
 
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("Mode", Mode);
+            info.AddValue("Name", Name);
+            info.AddValue("Path", Path);
+            info.AddValue("IgnoreNonMatchingSurrogateIds", ignoreNonMatchingSurrogateIds);
+            info.AddValue("CleanOldResults", CleanOldResults);
+            info.AddValue("ToscaCiClientPath", ToscaCiClientPath);
+            info.AddValue("RemoteExecutionEndpoint", RemoteExecutionEndpoint);
+            info.AddValue("ReportPath", ReportPath);
+            info.AddValue("CiClientUsername", CiClientUsername);
+            info.AddValue("CiClientPassword", CiClientPassword);
+            info.AddValue("CiTestConfigPath", CiTestConfigPath);
+
+        }
     }
 }

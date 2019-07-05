@@ -22,10 +22,10 @@ namespace ToscaCIConfig
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class OptionsDialog : Window
+    public partial class PreferencesDialog : Window
     {
         private TestConfig config;
-        public OptionsDialog()
+        public PreferencesDialog()
         {
             InitializeComponent();
             config = Helpers.GetTestConfig(((MainWindow) Application.Current.MainWindow)?.cbExecutionMode.Text,
@@ -37,11 +37,21 @@ namespace ToscaCIConfig
 
         private void okButton_onClick(object sender, RoutedEventArgs e)
         {
+            //TestConifg Options
             Console.WriteLine("Ok clicked");
-            config.BuildRootFolder = tbBuildRootFolder.Text;
-            config.TestMandateName = tbTestMandateName.Text;
+            config.BuildRootFolder = tbBuildRootFolder.Text.Trim();
+            config.TestMandateName = tbTestMandateName.Text.Trim();
             config.ignoreNonMatchingSurrogateIds = ((bool)rbIgnoreTrue.IsChecked);
             config.CleanOldResults = ((bool)rbCleanTrue.IsChecked);
+
+            //ClientSettings
+            config.ToscaCiClientPath = (tbToscaCiClientPath.Text.Trim() != "")
+                ? tbToscaCiClientPath.Text.Trim()
+                : config.ToscaCiClientPath.Trim();
+            config.CiTestConfigPath = tbTestConfigPath.Text.Trim();
+            config.ReportPath = tbReportPath.Text.Trim();
+            config.CiClientUsername = tbCiClientUsername.Text.Trim();
+            config.CiClientPassword = tbCiClientPassword.Text;
             DialogResult = true;
         }
 
