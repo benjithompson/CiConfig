@@ -19,9 +19,9 @@ namespace ToscaCIConfig
     /// </summary>
     public partial class NewConfigDialog : Window
     {
-        ObservableCollection<TestConfig> configs;
+        ObservableCollection<Options> configs;
         public bool isValid;
-        public NewConfigDialog(ObservableCollection<TestConfig> configs)
+        public NewConfigDialog(ObservableCollection<Options> configs)
         {
             InitializeComponent();
             this.configs = configs;

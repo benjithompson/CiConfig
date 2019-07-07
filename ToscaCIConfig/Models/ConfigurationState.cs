@@ -10,40 +10,33 @@ namespace ToscaCIConfig
 {
     public class ConfigurationState
     {
-        private string StateName;
-        private Dictionary<string, ObservableCollection<Execution>> ExecutionCollectionDict =
+        private readonly Dictionary<string, ObservableCollection<Execution>> _executionCollectionDict =
             new Dictionary<string, ObservableCollection<Execution>>();
-        private Dictionary<string, ObservableCollection<CustomProperty>> PropertyCollectionDict =
+        private readonly Dictionary<string, ObservableCollection<CustomProperty>> _propertyCollectionDict =
             new Dictionary<string, ObservableCollection<CustomProperty>>();
-
-        //Constructor
-        public ConfigurationState(string stateName)
-        {
-            this.StateName = stateName;
-        }
 
         internal void setStateCollections(string mode, string configname, ObservableCollection<Execution> executions, ObservableCollection<CustomProperty> properties)
         {
             var configkey = GetDictKey(mode, configname);
             //add configname as key and current collections as values
-            if (ExecutionCollectionDict.ContainsKey(configkey)){return;}
-            if (PropertyCollectionDict.ContainsKey(configkey)){return;}
+            if (_executionCollectionDict.ContainsKey(configkey)){return;}
+            if (_propertyCollectionDict.ContainsKey(configkey)){return;}
 
-            ExecutionCollectionDict.Add(configkey, executions);
-            PropertyCollectionDict.Add(configkey, properties);
+            _executionCollectionDict.Add(configkey, executions);
+            _propertyCollectionDict.Add(configkey, properties);
         }
 
         internal void RemoveConfigListViewFromState(string mode, string configname)
         {
-            ExecutionCollectionDict.Remove(GetDictKey(mode, configname));
-            PropertyCollectionDict.Remove(GetDictKey(mode, configname));
+            _executionCollectionDict.Remove(GetDictKey(mode, configname));
+            _propertyCollectionDict.Remove(GetDictKey(mode, configname));
         }
 
         internal ObservableCollection<Execution> GetExecutionsList(string mode, string configname)
         {
-            if (ExecutionCollectionDict.ContainsKey(GetDictKey(mode, configname)))
+            if (_executionCollectionDict.ContainsKey(GetDictKey(mode, configname)))
             {
-                return ExecutionCollectionDict[GetDictKey(mode, configname)];
+                return _executionCollectionDict[GetDictKey(mode, configname)];
             }
 
             return null;
@@ -51,9 +44,9 @@ namespace ToscaCIConfig
 
         internal ObservableCollection<CustomProperty> GetPropertiesList(string mode, string configname)
         {
-            if (PropertyCollectionDict.ContainsKey(GetDictKey(mode, configname)))
+            if (_propertyCollectionDict.ContainsKey(GetDictKey(mode, configname)))
             {
-                return PropertyCollectionDict[GetDictKey(mode, configname)];
+                return _propertyCollectionDict[GetDictKey(mode, configname)];
             }
 
             return null;

@@ -14,9 +14,9 @@ namespace ToscaCIConfig
     static class Helpers
     {
 
-        public static TestConfig GetTestConfig(string mode, string configName)
+        public static Options GetOptions(string mode, string configName)
         {
-            ObservableCollection<TestConfig> testConfigs = GetTestConfigsCollection(mode);
+            ObservableCollection<Options> testConfigs = GetTestConfigsCollection(mode);
             try
             {
                 var match = testConfigs.First(p => (p.Mode == mode && p.Name == configName));
@@ -30,22 +30,22 @@ namespace ToscaCIConfig
 
         }
 
-        public static ObservableCollection<TestConfig> GetTestConfigsCollection(string mode)
+        public static ObservableCollection<Options> GetTestConfigsCollection(string mode)
         {
             try { 
             
-                ObservableCollection<TestConfig> configs;
+                ObservableCollection<Options> configs;
 
                 switch (mode)
                 {
                     case "DEX":
-                        configs = ((MainWindow)Application.Current.MainWindow)?.DexConfigsCollection;
+                        configs = ((MainWindow)Application.Current.MainWindow)?.DexCollection;
                         break;
                     case "Remote":
-                        configs = ((MainWindow)Application.Current.MainWindow)?.RemoteConfigsCollection;
+                        configs = ((MainWindow)Application.Current.MainWindow)?.RemoteCollection;
                         break;
                     case "Local":
-                        configs = ((MainWindow)Application.Current.MainWindow)?.LocalConfigsCollection;
+                        configs = ((MainWindow)Application.Current.MainWindow)?.LocalCollection;
                         break;
                     default:
                         Console.WriteLine(@"No compatible Execution Mode for implemented exceptions");
@@ -81,11 +81,11 @@ namespace ToscaCIConfig
         }
 
         //Todo: SurrogateIDs, ignoreNonMatchingIds, buildrootfolder, cleanoldresults, testmandatename
-        public static XmlNodeList getExecutionsNodeListFromTestConfigFile(string dir, string name, string mode)
+        public static XmlNodeList GetExecutionsNodeListFromTestConfigFile(string dir, string name, string mode)
         {
 
             var configpath = dir + mode + "_" + name + ".xml";
-            XmlNodeList exList = null;
+            XmlNodeList exList;
             XmlDocument configDoc = new XmlDocument();
             try
             {
@@ -116,11 +116,7 @@ namespace ToscaCIConfig
             return exList;
         }
 
-        public static void SetTestConfigOptionsFromNodeList(TestConfig config)
-        {
-
-        }
-        public static XmlNodeList getSurrogateIdsNodeListFromTestConfigFile(string dir, string name, string mode, string tag)
+        public static XmlNodeList GetSurrogateIdsNodeListFromTestConfigFile(string dir, string name, string mode, string tag)
         {
 
             var configpath = dir + mode + "_" + name + ".xml";
@@ -148,8 +144,7 @@ namespace ToscaCIConfig
 
         }
         
-
-        public static XmlNodeList getPropertiesNodeListFromTestConfigFile(string dir, string name, string mode)
+        public static XmlNodeList GetPropertiesNodeListFromTestConfigFile(string dir, string name, string mode)
         {
 
             var configpath = dir + mode + "_" + name + ".xml";
@@ -172,7 +167,7 @@ namespace ToscaCIConfig
             }
         }
 
-        public static void setTestConfigOptionsFromFile(TestConfig config)
+        public static void SetTestConfigOptionsFromFile(Options config)
         {
 
             string dir = config.Path;
@@ -186,7 +181,7 @@ namespace ToscaCIConfig
                 if (mode != "DEX")
                 {
                     modeNode = xml.GetElementsByTagName("ignoreNonMatchingIds");
-                    config.ignoreNonMatchingSurrogateIds = modeNode[0].InnerText.ToLower() == "true";
+                    config.IgnoreNonMatchingSurrogateIds = modeNode[0].InnerText.ToLower() == "true";
                     modeNode = xml.GetElementsByTagName("cleanoldresults");
                     config.CleanOldResults = modeNode[0].InnerText.ToLower() == "true";
                     modeNode = xml.GetElementsByTagName("buildrootfolder");
@@ -242,28 +237,6 @@ namespace ToscaCIConfig
             return c;
         }
 
-        public static void writeTestConfigXmlFromList(string dir, string configName, string mode, ObservableCollection<Execution> el, ObservableCollection<CustomProperty> prop)
-        {
-            foreach (var executionObj in el)
-            {
-                writeListViewsToTestConfigFile(executionObj.execution);
-            }
-            foreach (var propertyObj in prop)
-            {
-                writeListViewsToTestConfigFile(propertyObj.Name, propertyObj.Value);
-            }
-        }
-
-        private static void writeListViewsToTestConfigFile(string executionid)
-        {
-            
-            Console.WriteLine("todo: write execution string to xml");
-        }
-
-        private static void writeListViewsToTestConfigFile(string propertyName, string propertyValue)
-        {
-            Console.WriteLine("todo: write propertyname and value to xml");
-        }
         public static bool ExecutionPatternIsValid(string ex)
         {
             return (IsNodePath(ex) || IsSurrogateId(ex));

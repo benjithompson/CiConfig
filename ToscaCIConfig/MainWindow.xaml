@@ -3,14 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:toscaCiConfig="clr-namespace:ToscaCIConfig"
-        xmlns:toscaCiConfigConverters="clr-namespace:ToscaCIConfigConverters"
+        xmlns:utils="clr-namespace:ToscaCIConfig.Utils"
         mc:Ignorable="d"
-        Title="Editor" Height="722" Width="1024" MinWidth="750" Background="AliceBlue" Icon="ciconfig.png">
+        Title="Editor" Height="722" Width="1024" MinWidth="750" Background="AliceBlue" Icon="Resources/ciconfig.png">
 
     <Window.Resources>
-        <toscaCiConfigConverters:IndexToBoolConverter x:Key="IndexToBoolConverterKey"/>
-        <toscaCiConfigConverters:BooleanAndConverter x:Key="BooleanAndConverter"/>
+        <utils:IndexToBoolConverter x:Key="IndexToBoolConverterKey"/>
+        <utils:BooleanAndConverter x:Key="BooleanAndConverter"/>
     </Window.Resources>
 
     <Grid 
@@ -60,7 +59,7 @@
                 DisplayMemberPath="Name"
                 IsTextSearchEnabled="True"
                 IsEditable="True"
-                SelectionChanged="cbConfigs_OnDropDownClosed"
+                SelectionChanged="CbConfigs_OnDropDownClosed"
                 IsSynchronizedWithCurrentItem="True"
                 SelectedIndex="0" />
             <Label Content="{Binding SelectedConfig.Name}"/>
@@ -228,7 +227,7 @@
                 BorderBrush="LightGray"
                 Click="ButtonCopy_OnClick">
                 <Image Width="25" Height="22"
-                       Source="copyicon.png"/>
+                       Source="Resources/copyicon.png"/>
             </Button>
             <Label Name="lstatus" Content="" Margin="10,5,0,0" Foreground="Green" Width="500"></Label>
             <Button 
@@ -259,8 +258,9 @@
             Grid.ColumnSpan="3">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="File">
-                    <MenuItem Header="_Save"></MenuItem>
-                    <MenuItem Header="_Preferences"></MenuItem>
+                    <MenuItem Header="Import" Click="ImportItem_OnClick"/>
+                    <MenuItem Header="_Save" Click="ButtonOk_OnClick"></MenuItem>
+                    <MenuItem Header="_Preferences" Click="OptionItem_OnClick"></MenuItem>
                     <Separator/>
                     <MenuItem Header="_Exit"></MenuItem>
                 </MenuItem>

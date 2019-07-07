@@ -50,6 +50,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
@@ -71,12 +77,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SurrogateId.cs" />
-    <Compile Include="OptionsDialog.xaml.cs">
+    <Compile Include="Models\Preferences.cs" />
+    <Compile Include="Models\SurrogateId.cs" />
+    <Compile Include="Views\OptionsDialog.xaml.cs">
       <DependentUpon>OptionsDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewConfigDialog.xaml.cs">
+    <Compile Include="Views\NewConfigDialog.xaml.cs">
       <DependentUpon>NewConfigDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PreferencesDialog.xaml.cs">
+      <DependentUpon>PreferencesDialog.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -86,22 +96,25 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationState.cs" />
-    <Compile Include="Converters.cs" />
-    <Compile Include="Execution.cs" />
-    <Compile Include="ConfigWriter.cs" />
-    <Compile Include="CustomProperty.cs" />
-    <Compile Include="Helpers.cs" />
-    <Compile Include="TestConfig.cs" />
+    <Compile Include="Models\ConfigurationState.cs" />
+    <Compile Include="Utils\Converters.cs" />
+    <Compile Include="Models\Execution.cs" />
+    <Compile Include="Models\CustomProperty.cs" />
+    <Compile Include="Utils\Helpers.cs" />
+    <Compile Include="Models\Options.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="OptionsDialog.xaml">
+    <Page Include="Views\OptionsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NewConfigDialog.xaml">
+    <Page Include="Views\NewConfigDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PreferencesDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -124,6 +137,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -145,10 +159,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="copyicon.png" />
+    <Resource Include="Resources\copyicon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ciconfig.png" />
+    <Resource Include="Resources\ciconfig.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
