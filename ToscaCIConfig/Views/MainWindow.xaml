@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:utils="clr-namespace:ToscaCIConfig.Utils"
         mc:Ignorable="d"
-        Title="Editor" Height="722" Width="1024" MinWidth="750" Background="AliceBlue" Icon="Resources/ciconfig.png">
+        Title="Editor" Height="722" Width="1024" MinWidth="750" Background="AliceBlue" Icon="/Resources/ciconfig.png">
 
     <Window.Resources>
         <utils:IndexToBoolConverter x:Key="IndexToBoolConverterKey"/>
@@ -227,7 +227,7 @@
                 BorderBrush="LightGray"
                 Click="ButtonCopy_OnClick">
                 <Image Width="25" Height="22"
-                       Source="Resources/copyicon.png"/>
+                       Source="/Resources/copyicon.png"/>
             </Button>
             <Label Name="lstatus" Content="" Margin="10,5,0,0" Foreground="Green" Width="500"></Label>
             <Button 
