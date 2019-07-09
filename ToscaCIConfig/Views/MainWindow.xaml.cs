@@ -53,6 +53,7 @@ namespace ToscaCIConfig
             tbEvents.Content = mode + " Executions";
             PropertyNamesCollection = new ObservableCollection<string>();
             cbCustomProperties.ItemsSource = PropertyNamesCollection;
+            lstatus.Foreground = Brushes.Green;
             lstatus.Content = "Ready!";
         }
 
@@ -90,6 +91,7 @@ namespace ToscaCIConfig
 
         private void InitOptionsCollectionsFromConfigFile(string path)
         {
+            lstatus.Foreground = Brushes.Green;
             lstatus.Content = "Loading Test Configurations...";
             //open folder or create if doesn't exist
             Directory.CreateDirectory(path);
@@ -138,6 +140,7 @@ namespace ToscaCIConfig
 
         private void InitTestConfigStateFromCollections()
         {
+            lstatus.Foreground = Brushes.Green;
             lstatus.Content = "Loading Test Configurations...";
             foreach (var testConfig in DexCollection)
             {
@@ -330,6 +333,7 @@ namespace ToscaCIConfig
                 }
             }
             doc.Save(path);
+            lstatus.Foreground = Brushes.Green;
             lstatus.Content = "Test Configurations Saved to " + path;
         }
         #endregion
@@ -355,6 +359,7 @@ namespace ToscaCIConfig
                 cbConfigs.Text = "";
                 lvExecutions.ItemsSource = State.GetExecutionsList(mode, configname);
                 lvProperties.ItemsSource = State.GetPropertiesList(mode, configname);
+                lstatus.Foreground = Brushes.Green;
                 lstatus.Content = "Test Configuration '" + configname + "' created";
             }
         }
@@ -384,6 +389,7 @@ namespace ToscaCIConfig
 
                     lvExecutions.ItemsSource = null;
                     lvProperties.ItemsSource = null;
+                    lstatus.Foreground = Brushes.Green;
                     lstatus.Content = "Test Configuration '" + configname + "' deleted";
                 }
             }
@@ -411,6 +417,7 @@ namespace ToscaCIConfig
             lvExecutions.ItemsSource = exCollection;
             lvProperties.ItemsSource = propCollection;
             SetListViewHeader(mode);
+            lstatus.Foreground = Brushes.Green;
             lstatus.Content = "Test Configuration changed to '" + name + "'";
         }
 
@@ -424,6 +431,7 @@ namespace ToscaCIConfig
             InitConfigsComboBoxItemSource();
             var configname = cbConfigs.Text;
             tbEvents.Content = cbExecutionMode.Text + " Executions";
+            lstatus.Foreground = Brushes.Green;
             lstatus.Content = "Test Configuration mode changed to " + mode;
             lvProperties.ItemsSource = State.GetPropertiesList(mode, configname);
             lvExecutions.ItemsSource = State.GetExecutionsList(mode, configname);
@@ -441,6 +449,7 @@ namespace ToscaCIConfig
             {
                 Console.WriteLine(@"Delete Key pressed on property combobox");
                 PropertyNamesCollection.Remove(cbCustomProperties.Text);
+                lstatus.Foreground = Brushes.Green;
                 lstatus.Content = "Property Removed from Combobox";
             }
 
@@ -450,6 +459,7 @@ namespace ToscaCIConfig
                 if (!PropertyNamesCollection.Contains(cbCustomProperties.Text))
                 {
                     PropertyNamesCollection.Add(cbCustomProperties.Text);
+                    lstatus.Foreground = Brushes.Green;
                     lstatus.Content = "Property Name Added to Combobox";
                 }
             }
@@ -470,6 +480,7 @@ namespace ToscaCIConfig
                         Console.WriteLine("Adding execution to ListView");
                         executionsList.Add(new Execution(executionText));
                         lvExecutions.ItemsSource = executionsList;
+                        lstatus.Foreground = Brushes.Green;
                         lstatus.Content = "Execution Added";
                     }
                     else
@@ -520,6 +531,7 @@ namespace ToscaCIConfig
                 Console.WriteLine("Adding CustomProperty to ListView");
                 prop.Add(new CustomProperty(propertyName, propertyValue));
                 lvProperties.ItemsSource = prop;
+                lstatus.Foreground = Brushes.Green;
                 lstatus.Content = "Property Added";
             }
         }
@@ -530,6 +542,7 @@ namespace ToscaCIConfig
             {
                 SubmitExecution_OnClick(sender, e);
             }
+            lstatus.Foreground = Brushes.Green;
             lstatus.Content = "Execution Added";
         }
 
@@ -539,6 +552,7 @@ namespace ToscaCIConfig
             {
                 SubmitProperty_OnClick(sender, e);
             }
+            lstatus.Foreground = Brushes.Green;
             lstatus.Content = "Property Added";
         }
 
@@ -577,7 +591,7 @@ namespace ToscaCIConfig
                 {
                     exList.Remove(removedItem);
                 }
-
+                lstatus.Foreground = Brushes.Green;
                 lstatus.Content = "Execution Removed";
                 lvExecutions.Items.Refresh();
             }
@@ -600,7 +614,7 @@ namespace ToscaCIConfig
                 {
                     exList.Remove(removedItem);
                 }
-
+                lstatus.Foreground = Brushes.Green;
                 lstatus.Content = "Properties Removed";
                 lvExecutions.Items.Refresh();
             }
@@ -610,13 +624,14 @@ namespace ToscaCIConfig
         {
             if (cbConfigs.Text == "")
             {
-                lstatus.Content = "Select a Test Configuration!";
                 lstatus.Foreground = Brushes.Red;
+                lstatus.Content = "Select a Test Configuration!";
                 return;
             }
             var cmd = GetCiClientCommandString();
 
             Clipboard.SetDataObject(cmd);
+            lstatus.Foreground = Brushes.Green;
             lstatus.Content = "ToscaCiClient CMD Copied to Clipboard!";
         }
 
@@ -628,6 +643,7 @@ namespace ToscaCIConfig
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
+            lstatus.Foreground = Brushes.Green;
             lstatus.Content = "Saving Configurations...";
             SaveConfigFiles();
             MessageBox.Show("Test Configs saved!", "File Saved", MessageBoxButton.OK);

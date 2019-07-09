@@ -39,7 +39,7 @@ namespace ToscaCIConfig
                 cbConfig.Text = tbConfigName.Text;
                 return;
             }
-
+            lStatus.Foreground = Brushes.Red;
             lStatus.Content = "Config Name already exists or is empty";
             DialogResult = null;
         }
