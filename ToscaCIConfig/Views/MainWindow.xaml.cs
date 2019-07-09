@@ -56,6 +56,8 @@ namespace ToscaCIConfig
             lstatus.Content = "Ready!";
         }
 
+        #region LocalMethods 
+
         private ObservableCollection<Options> GetOptionsCollection(string mode)
         {
             var filename = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Tricentis_GmbH\\CiConfig\\" + mode + "_options.conf";
@@ -330,8 +332,9 @@ namespace ToscaCIConfig
             doc.Save(path);
             lstatus.Content = "Test Configurations Saved to " + path;
         }
+        #endregion
 
-        //Events
+        #region Event Handlers
 
         private void NewConfig_OnClick(object sender, RoutedEventArgs e)
         {
@@ -617,14 +620,8 @@ namespace ToscaCIConfig
             lstatus.Content = "ToscaCiClient CMD Copied to Clipboard!";
         }
 
-        private void OptionItem_OnClick(object sender, RoutedEventArgs e)
+        private void MenuPreferences_OnClick(object sender, RoutedEventArgs e)
         {
-            if (cbConfigs.Text == "")
-            {
-                MessageBox.Show("Load a Test Local or Remote Config for Options.", "Error", MessageBoxButton.OK);
-                return;
-            }
-
             PreferencesDialog dlg = new PreferencesDialog(Preference);
             dlg.ShowDialog();
         }
@@ -632,14 +629,8 @@ namespace ToscaCIConfig
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
             lstatus.Content = "Saving Configurations...";
-            if (cbConfigs.Text == "")
-            {
-                MessageBox.Show("Load a Configuration before saving", "No Config Loaded", MessageBoxButton.OK);
-                return;
-            }
             SaveConfigFiles();
             MessageBox.Show("Test Configs saved!", "File Saved", MessageBoxButton.OK);
-
         }
 
         private void ImportItem_OnClick(object sender, RoutedEventArgs e)
@@ -652,5 +643,24 @@ namespace ToscaCIConfig
                 InitOptionsCollectionsFromConfigFile(dir);
             }
         }
+
+        private void OnExit_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Would you like to save your changes?", "Save Configurations", MessageBoxButton.YesNoCancel);
+
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    ButtonOk_OnClick(sender, e);
+                    break;
+                case MessageBoxResult.No:
+                    this.Close();
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+            return;
+        }
     }
+    #endregion
 }

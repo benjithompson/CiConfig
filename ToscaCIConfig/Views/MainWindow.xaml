@@ -260,9 +260,9 @@
                 <MenuItem Header="File">
                     <MenuItem Header="Import" Click="ImportItem_OnClick"/>
                     <MenuItem Header="_Save" Click="ButtonOk_OnClick"></MenuItem>
-                    <MenuItem Header="_Preferences" Click="OptionItem_OnClick"></MenuItem>
+                    <MenuItem Header="_Preferences" Click="MenuPreferences_OnClick"></MenuItem>
                     <Separator/>
-                    <MenuItem Header="_Exit"></MenuItem>
+                    <MenuItem Header="_Exit" Click="OnExit_Click"></MenuItem>
                 </MenuItem>
             </Menu>
         </DockPanel>
