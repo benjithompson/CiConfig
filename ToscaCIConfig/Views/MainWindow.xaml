@@ -250,7 +250,7 @@
                 DockPanel.Dock="Right"
                 Background="White"
                 BorderBrush="LightGray"
-                IsCancel="True"/>
+                Click="OnExit_Click"/>
         </DockPanel>
         <DockPanel 
             Grid.Row="0"
