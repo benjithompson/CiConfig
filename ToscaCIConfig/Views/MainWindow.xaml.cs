@@ -94,8 +94,9 @@ namespace ToscaCIConfig
             lstatus.Foreground = Brushes.Green;
             lstatus.Content = "Loading Test Configurations...";
             //open folder or create if doesn't exist
-            Directory.CreateDirectory(path);
-            foreach (string file in Directory.EnumerateFiles(path, "*.xml"))
+            var dir = Path.GetDirectoryName(path);
+            Directory.CreateDirectory(dir);
+            foreach (string file in Directory.EnumerateFiles(dir, "*.xml"))
             {
                 var configName = Path.GetFileNameWithoutExtension(file);
                 if (configName == null)
