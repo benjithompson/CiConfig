@@ -80,7 +80,8 @@ namespace ToscaCIConfig
             return filename;
         }
 
-        //Todo: SurrogateIDs, ignoreNonMatchingIds, buildrootfolder, cleanoldresults, testmandatename
+        //Todo: SurrogateIDs, ignoreNonMatchingIds, buildrootfolder, cleanoldresults, testmandatename, 
+        // Handle missing files/folder
         public static XmlNodeList GetExecutionsNodeListFromTestConfigFile(string dir, string name, string mode)
         {
 
@@ -89,7 +90,11 @@ namespace ToscaCIConfig
             XmlDocument configDoc = new XmlDocument();
             try
             {
+                if (!File.Exists(configpath))
+                    ((MainWindow)Application.Current.MainWindow)?.SaveConfigFile(configpath, mode);
                 configDoc.Load(configpath);
+                 
+                    
                 if (mode == "DEX")
                 {
                     exList = configDoc.GetElementsByTagName("TestEvent");
@@ -172,12 +177,13 @@ namespace ToscaCIConfig
 
             string dir = config.Path;
             string mode = config.Mode;
+            string name = config.Name;
 
             XmlNodeList modeNode = null;
             XmlDocument xml = new XmlDocument();
             try
             {
-                xml.Load(dir);
+                xml.Load(dir+mode+"_"+ name + ".xml");
                 if (mode != "DEX")
                 {
                     modeNode = xml.GetElementsByTagName("ignoreNonMatchingIds");

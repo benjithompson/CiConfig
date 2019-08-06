@@ -264,6 +264,7 @@ namespace ToscaCIConfig
             }
         }
 
+        //TODO: Handle file path creation and permission
         public void SaveConfigFile(string configName, string mode)
         {
 
@@ -273,6 +274,9 @@ namespace ToscaCIConfig
             var path = Preference.TestConfigurationsPath + mode + "_" + configName + ".xml";
             XElement executions;
             XElement surrogateIds;
+
+            if (!Directory.Exists(config.Path))
+                Directory.CreateDirectory(config.Path);
             using (StreamWriter file =
                 new StreamWriter(path))
             {

@@ -21,7 +21,7 @@
             <TextBox Name="tbTestMandateName" VerticalAlignment="Center" Height="25" Margin="10,0,10,5"></TextBox>
             <StackPanel>
                 <Label Content="Remote Execution Endpoint (Hostname/IP and Port)" Margin="5,0"></Label>
-                <TextBox Name="tbRemoteExecutionEndpoint" Text="" Height="25" Margin="10,0,10,5"></TextBox>
+                <TextBox Name="tbRemoteExecutionEndpoint" Text="http://" Height="25" Margin="10,0,10,5"></TextBox>
             </StackPanel>
             <StackPanel>
                 <Label Content="Report File Path/Name" Margin="5,0,5,0"></Label>
