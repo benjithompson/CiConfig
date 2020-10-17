@@ -61,7 +61,7 @@ namespace ToscaCIConfig
 
         private ObservableCollection<Options> GetOptionsCollection(string mode)
         {
-            var filename = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Tricentis_GmbH\\CiConfig\\" + mode + "_options.conf";
+            var filename = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TRICENTIS\\CiConfig\\" + mode + "_options.conf";
             if(File.Exists(filename))
             {
                 using (Stream stream = File.Open(filename, FileMode.Open))
@@ -80,7 +80,7 @@ namespace ToscaCIConfig
 
         private void SetOptions(string mode, ObservableCollection<Options> collection)
         {
-            var filename = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Tricentis_GmbH\\CiConfig\\" + mode + "_options.conf";
+            var filename = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TRICENTIS\\CiConfig\\" + mode + "_options.conf";
             Directory.CreateDirectory(Path.GetDirectoryName(filename));
             using (Stream stream = File.Open(filename, FileMode.Create))
             {
@@ -91,6 +91,10 @@ namespace ToscaCIConfig
 
         private void InitOptionsCollectionsFromConfigFile(string path)
         {
+            if (String.IsNullOrEmpty(path))
+            {
+                return;
+            }
             lstatus.Foreground = Brushes.Green;
             lstatus.Content = "Loading Test Configurations...";
             //open folder or create if doesn't exist
@@ -262,6 +266,9 @@ namespace ToscaCIConfig
             {
                 SaveConfigFile(config.Name, config.Mode);
             }
+            SetOptions("DEX", DexCollection);
+            SetOptions("Remote", RemoteCollection);
+            SetOptions("Local", LocalCollection);
         }
 
         //TODO: Handle file path creation and permission
@@ -271,7 +278,7 @@ namespace ToscaCIConfig
             var config = Helpers.GetOptions(mode, configName);
             var el = State.GetExecutionsList(mode, configName);
             var prop = State.GetPropertiesList(mode, configName);
-            var path = Preference.TestConfigurationsPath + mode + "_" + configName + ".xml";
+            var path = Preference.TestConfigurationsPath + mode + "_" + config.Name + ".xml";
             XElement executions;
             XElement surrogateIds;
 
@@ -385,9 +392,22 @@ namespace ToscaCIConfig
                     var match = Helpers.GetOptions(mode, configname);
                     if (match != null)
                     {
-                        var path = match.Path + "_" + configname;
-                        File.Delete(path);
-                        configs.Remove(match);
+                        var path = match.Path + match.Mode + "_" + configname + ".xml";
+
+                        try
+                        {
+                            File.Delete(path);
+                            configs.Remove(match);
+                            SetOptions("DEX", DexCollection);
+                            SetOptions("Remote", RemoteCollection);
+                            SetOptions("Local", LocalCollection);
+                        }
+                        catch (Exception)
+                        {
+
+                            throw;
+                        }
+                        
                     }
 
                     State.RemoveConfigListViewFromState(mode, configname);
@@ -566,7 +586,7 @@ namespace ToscaCIConfig
             //open options dialog
             if (cbConfigs.Text == "")
             {
-                MessageBox.Show("Load a Test Local or Remote Config for Options.", "Error", MessageBoxButton.OK);
+                MessageBox.Show("Select a Configuration for Options.", "Error", MessageBoxButton.OK);
                 return;
             }
 
