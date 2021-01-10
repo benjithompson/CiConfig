@@ -175,16 +175,13 @@ namespace ToscaCIConfig
         public static void SetTestConfigOptionsFromFile(Options config)
         {
 
-            string dir = config.Path;
-            string mode = config.Mode;
-            string name = config.Name;
 
             XmlNodeList modeNode = null;
             XmlDocument xml = new XmlDocument();
             try
             {
-                xml.Load(dir+mode+"_"+ name + ".xml");
-                if (mode != "DEX")
+                xml.Load(config.FilePath);
+                if (config.Mode != "DEX")
                 {
                     modeNode = xml.GetElementsByTagName("ignoreNonMatchingIds");
                     config.IgnoreNonMatchingSurrogateIds = modeNode[0].InnerText.ToLower() == "true";
