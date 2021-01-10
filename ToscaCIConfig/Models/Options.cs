@@ -11,11 +11,12 @@ namespace ToscaCIConfig
     public class Options
     {
         
-        public Options(string type, string name, string path)
+        public Options(string type, string name, string path, string filepath)
         {
             Mode = type;
             Name = name;
             Path = path;
+            FilePath = filepath;
             IgnoreNonMatchingSurrogateIds = true;
             CleanOldResults = true;
             RemoteExecutionEndpoint = "";
@@ -29,6 +30,7 @@ namespace ToscaCIConfig
         public string Mode { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
+        public string FilePath { get; set; }
         public string BuildRootFolder { get; set; }
         public string TestMandateName { get; set; }
         public string RemoteExecutionEndpoint { get; set; }

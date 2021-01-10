@@ -61,7 +61,7 @@ namespace ToscaCIConfig
 
         private ObservableCollection<Options> GetOptionsCollection(string mode)
         {
-            var filename = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TRICENTIS\\CiConfig\\" + mode + "_options.conf";
+            var filename = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CiConfig\\" + mode + "_options.conf";
             if(File.Exists(filename))
             {
                 using (Stream stream = File.Open(filename, FileMode.Open))
@@ -80,7 +80,7 @@ namespace ToscaCIConfig
 
         private void SetOptions(string mode, ObservableCollection<Options> collection)
         {
-            var filename = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TRICENTIS\\CiConfig\\" + mode + "_options.conf";
+            var filename = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CiConfig\\" + mode + "_options.conf";
             Directory.CreateDirectory(Path.GetDirectoryName(filename));
             using (Stream stream = File.Open(filename, FileMode.Create))
             {
@@ -112,17 +112,17 @@ namespace ToscaCIConfig
                 {
                     configName = Helpers.RemoveExecutionMode(configName, "DEX");
                     //test file for execution mode using filename
-                    DexCollection.Add(new Options("DEX", configName, file));
+                    DexCollection.Add(new Options("DEX", configName, file, Preference.TestConfigurationsPath + "DEX_" + configName + ".xml"));
                 }
                 else if (configName.StartsWith("Remote"))
                 {
                     configName = Helpers.RemoveExecutionMode(configName, "Remote");
-                    RemoteCollection.Add(new Options("Remote", configName, file));
+                    RemoteCollection.Add(new Options("Remote", configName, file, "Remote_" + configName + ".xml"));
                 }
                 else if (configName.StartsWith("Local"))
                 {
                     configName = Helpers.RemoveExecutionMode(configName, "Local");
-                    LocalCollection.Add(new Options("Local", configName, file));
+                    LocalCollection.Add(new Options("Local", configName, file, "Local_" + configName + ".xml"));
                 }
             }
         }
@@ -203,7 +203,7 @@ namespace ToscaCIConfig
             
             try
             {
-                var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)+ "\\Tricentis_GmbH\\CiConfig\\preferences.conf";
+                var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)+ "\\CiConfig\\preferences.conf";
                 Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
                 IFormatter formatter = new BinaryFormatter();
                 Preferences pf = (Preferences)formatter.Deserialize(stream);
@@ -278,20 +278,20 @@ namespace ToscaCIConfig
             var config = Helpers.GetOptions(mode, configName);
             var el = State.GetExecutionsList(mode, configName);
             var prop = State.GetPropertiesList(mode, configName);
-            var path = Preference.TestConfigurationsPath + mode + "_" + config.Name + ".xml";
+           
             XElement executions;
             XElement surrogateIds;
 
             if (!Directory.Exists(config.Path))
                 Directory.CreateDirectory(config.Path);
             using (StreamWriter file =
-                new StreamWriter(path))
+                new StreamWriter(config.FilePath))
             {
                 file.Write(Properties.Resources.ResourceManager.GetString(mode));
             }
 
             // load the XML file into an XElement
-            XDocument doc = XDocument.Load(path);
+            XDocument doc = XDocument.Load(config.FilePath);
 
             foreach (var ex in el)
             {
@@ -344,9 +344,9 @@ namespace ToscaCIConfig
                     Console.WriteLine(e.Message);
                 }
             }
-            doc.Save(path);
+            doc.Save(config.FilePath);
             lstatus.Foreground = Brushes.Green;
-            lstatus.Content = "Test Configurations Saved to " + path;
+            lstatus.Content = "Test Configurations Saved to " + config.FilePath;
         }
         #endregion
 
@@ -364,7 +364,9 @@ namespace ToscaCIConfig
             if ((bool) dlg.ShowDialog())
             {
                 var configname = cbConfigs.Text;
-                configs.Add(new Options(mode, configname, Preference.TestConfigurationsPath));
+                var path = Preference.TestConfigurationsPath;
+                var filepath = Preference.TestConfigurationsPath + mode + "_" + configname + ".xml";
+                configs.Add(new Options(mode, configname, path, filepath));
 
                 State.setStateCollections(mode, configname, new ObservableCollection<Execution>(),
                     new ObservableCollection<CustomProperty>());

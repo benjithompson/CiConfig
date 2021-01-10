@@ -19,7 +19,7 @@ namespace ToscaCIConfig
             ObservableCollection<Options> testConfigs = GetTestConfigsCollection(mode);
             try
             {
-                var match = testConfigs.First(p => (p.Mode == mode && p.Name == configName));
+                var match = testConfigs.First(p => p.Mode == mode && p.Name == configName);
                 return match;
             }
             catch (Exception e)
